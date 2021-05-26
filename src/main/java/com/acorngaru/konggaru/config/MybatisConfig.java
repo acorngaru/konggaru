@@ -23,7 +23,12 @@ public class MybatisConfig {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
 
         sqlSessionFactoryBean.setDataSource(dataSource);
-        //sqlSessionFactoryBean.setMapperLocations(applicationContext.getResource("classpath:/mapper/*.xml"));
+        /*
+        sqlSessionFactoryBean.setMapperLocations(
+                new PathMatchingResourcePatternResolver()
+                        .getResources("classpath:mapper/*.xml")
+        );
+        */
         sqlSessionFactoryBean.setTypeAliasesPackage("com.acorngaru.konggaru.model");
 
         Properties properties = new Properties();
