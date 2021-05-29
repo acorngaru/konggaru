@@ -3,19 +3,13 @@ package com.acorngaru.konggaru.controller;
 import com.acorngaru.konggaru.model.Ingredient;
 import com.acorngaru.konggaru.model.Page;
 import com.acorngaru.konggaru.service.IngredientService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -33,11 +27,11 @@ public class IngredientController {
         return "ingredient/ingredient";
     }
 
+    @ResponseBody
     @PostMapping(value = "/list")
-    public void showHome(
+    public Page showHome(
             @RequestParam("selectName") String name,
-            @RequestParam("pageNo") int pageNo,
-            HttpServletResponse res ) throws IOException {
+            @RequestParam("pageNo") int pageNo) throws IOException {
         Page p = new Page();
         p.setPageCount(5);
         p.setCurrentPageNo(pageNo);
@@ -49,27 +43,21 @@ public class IngredientController {
         map.put("name",name);
         p.setItems(service.searchIngredient(map));
 
-        ObjectMapper om = new ObjectMapper();
 
-        String json = om.writeValueAsString(p);
-
-        res.setCharacterEncoding("UTF-8");
-        PrintWriter out = res.getWriter();
-        out.println(json);
-
+        return p;
     }
-    @GetMapping("/deleteone")
+
+    @DeleteMapping("/deleteone")
     public String deleteIngredient(
-            @RequestParam("name") String data,
-            HttpServletRequest request
+            @RequestParam("name") String data
     ){
 
-        int amount = service.ingredientDelete(Integer.parseInt(data));
+        int amount = service.ingredientDel(Integer.parseInt(data));
         log.info("삭제 목록>>"+String.valueOf(amount));
 
         return "redirect:/" ;
     }
-    @GetMapping("/deleteall")
+    @DeleteMapping("/deleteall")
     public String deleteIngredientAll(
             @RequestParam("name") String data,
             HttpServletRequest request
@@ -79,15 +67,13 @@ public class IngredientController {
         List<String> list = Arrays.asList(x);//List.생성
         System.out.println(list);
 
-
-
-        int n = service.IngredientDelAll(list);
+        int n = service.ingredientDelAll(list);
         log.info("실행된 레코드갯수: "+n);
 
         return "redirect:/" ;
     }
 
-    @PostMapping("/updateone")
+    @PutMapping("/updateone")
     public String updateIngredient(
             @RequestParam("update_id") String id,
             @RequestParam("update_name") String name,
@@ -122,7 +108,7 @@ public class IngredientController {
         int id = 0;
         Ingredient ingredient = new Ingredient(id,name,Integer.parseInt(quantity),
                 Integer.parseInt(price),unit,partner);
-        service.ingredientCreate(ingredient);
+        service.create(ingredient);
         log.info(String.valueOf(ingredient));
         return "redirect:/" ;
     }

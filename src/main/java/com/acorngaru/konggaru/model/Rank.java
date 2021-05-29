@@ -4,13 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.apache.ibatis.type.Alias;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Alias("Rank")
 public class Rank {
     private int quan;
     private String name;
-    private String images;
+    private String image_url;
 }

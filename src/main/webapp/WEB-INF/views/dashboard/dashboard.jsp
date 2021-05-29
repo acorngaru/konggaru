@@ -89,20 +89,22 @@
                             url : "dashboard/chart",
                             dataType :"json",
                             success : function (data,status,xhr){
+
                                 var jsonData = data
+                                console.log(data)
                                 var jsonData1 = {
-                                    '2021-01' : data['2021-01'],
-                                    '2021-02' : data['2021-02'],
-                                    '2021-03' : data['2021-03'],
-                                    '2021-04' : data['2021-04'],
-                                    '2021-05' : data['2021-05'],
-                                    '2021-06' : data['2021-06'],
-                                    '2021-07' : data['2021-07'],
-                                    '2021-08' : data['2021-08'],
-                                    '2021-09' : data['2021-09'],
-                                    '2021-10' : data['2021-10'],
-                                    '2021-11' : data['2021-11'],
-                                    '2021-12' : data['2021-12'],
+                                    '2021-01' : data[0]['income'],
+                                    '2021-02' : data[1]['income'],
+                                    '2021-03' : data[2]['income'],
+                                    '2021-04' : data[3]['income'],
+                                    '2021-05' :data[4]['income'],
+                                    '2021-06' :data[5]['income'],
+                                    '2021-07' : data[6]['income'],
+                                    '2021-08' : data[7]['income'],
+                                    '2021-09' : data[8]['income'],
+                                    '2021-10' : data[9]['income'],
+                                    '2021-11' : data[10]['income'],
+                                    '2021-12' : data[11]['income'],
                                 }
                                 console.log(jsonData1)
                                 var jsonData2 = {

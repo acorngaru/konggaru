@@ -21,7 +21,7 @@
             month = to_date(#{month},'MM')
     </update>
     <select id="RankIncome" resultType="Rank">
-        select a.quan , product.name ,product.images
+        select a.quan , product.name ,product.image_url
         from(
                 select count(*) quan, product.id
                 from order_detail

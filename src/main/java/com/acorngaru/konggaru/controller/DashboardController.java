@@ -10,14 +10,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-
 @Slf4j
 @Controller
 @RequestMapping("/dashboard")
@@ -30,10 +29,10 @@ public class DashboardController {
         return "dashboard/dashboard";
     }
 
+    @ResponseBody
     @GetMapping("/chart")
-    public void chart(
-            HttpServletResponse res
-    ) throws IOException {
+    public List<Income> chart(
+    )   {
         List<Income> incomes = s.allIncome();
         log.info(String.valueOf(incomes));
         HashMap<String,String> data= new HashMap<>();
@@ -42,36 +41,28 @@ public class DashboardController {
             data.put(i.getMonth(),Integer.toString(i.getIncome()));
         }
 
-        ObjectMapper om = new ObjectMapper();
 
-        String json = om.writeValueAsString(data);
-
-        res.setCharacterEncoding("UTF-8");
-        PrintWriter out = res.getWriter();
-        out.println(json);
+        return incomes;
     }
-
+    @ResponseBody
     @GetMapping("/product_rank")
-    public void productRank(HttpServletResponse res) throws IOException{
+    public HashMap<String, String> productRank(HttpServletResponse res) throws IOException{
         List<Rank> ranks = s.getRank();
         log.info(String.valueOf(ranks));
 
         HashMap<String,String> data = new HashMap<>();
         String name = "incomes";
         for (Rank rank : ranks)
-            data.put(rank.getName(),rank.getImages());
+            data.put(rank.getName(),rank.getImage_url());
 
         ObjectMapper om = new ObjectMapper();
 
-        String json = om.writeValueAsString(data);
+        return data;
 
-        res.setCharacterEncoding("UTF-8");
-        PrintWriter out = res.getWriter();
-        out.println(json);
     }
-
-    @PostMapping("/update_income")
-    public void updateMonthlyIncome(HttpServletResponse res) throws IOException{
+    @ResponseBody
+    @GetMapping ("/update_income")
+    public HashMap<String, String> updateMonthlyIncome(HttpServletResponse res) throws IOException{
         int monthly = s.thisMonth();
 
         HashMap<String,String> data = new HashMap<>();
@@ -87,12 +78,7 @@ public class DashboardController {
         Income income = new Income(month,monthly);
         int m = s.updateMonthlyIncome(income);
 
-        ObjectMapper om = new ObjectMapper();
-        String json = om.writeValueAsString(data);
-
-        res.setCharacterEncoding("UTF-8");
-        PrintWriter out = res.getWriter();
-        out.println(json);
+        return data;
     }
 
 }
