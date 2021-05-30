@@ -29,7 +29,7 @@ public class IngredientService  implements IngredientMapper {
     }
     @Override
     public int countIngredientByName(String name) {
-        int amount = sqlSession.selectOne(NAMESPACE +".countIngredientByName","");
+        int amount = sqlSession.selectOne(NAMESPACE +".countIngredientByName",name);
         return amount;
     }
     @Override
