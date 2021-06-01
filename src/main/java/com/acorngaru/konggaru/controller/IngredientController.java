@@ -31,7 +31,7 @@ public class IngredientController {
     @PostMapping(value = "/list")
     public Page showHome(
             @RequestParam("selectName") String name,
-            @RequestParam("pageNo") int pageNo) throws IOException {
+            @RequestParam("pageNo") int pageNo)  {
         Page p = new Page();
         p.setPageCount(5);
         p.setCurrentPageNo(pageNo);
@@ -43,11 +43,10 @@ public class IngredientController {
         map.put("name",name);
         p.setItems(service.searchIngredient(map));
 
-
         return p;
     }
 
-    @DeleteMapping("/deleteone")
+    @PostMapping("/deleteone")
     public String deleteIngredient(
             @RequestParam("name") String data
     ){
@@ -55,61 +54,33 @@ public class IngredientController {
         int amount = service.ingredientDel(Integer.parseInt(data));
         log.info("삭제 목록>>"+String.valueOf(amount));
 
-        return "redirect:/" ;
+        return "redirect:ingredient/ingredient" ;
     }
-    @DeleteMapping("/deleteall")
-    public String deleteIngredientAll(
-            @RequestParam("name") String data,
-            HttpServletRequest request
-    ){
 
+    @PostMapping("/deleteall")
+    public void deleteIngredientAll(
+            @RequestParam("name") String data
+    ){
         String[] x = data.split(",");
         List<String> list = Arrays.asList(x);//List.생성
-        System.out.println(list);
-
         int n = service.ingredientDelAll(list);
         log.info("실행된 레코드갯수: "+n);
 
-        return "redirect:/" ;
     }
 
-    @PutMapping("/updateone")
-    public String updateIngredient(
-            @RequestParam("update_id") String id,
-            @RequestParam("update_name") String name,
-            @RequestParam("update_partner") String update_partner,
-            @RequestParam("update_price") String update_price,
-            @RequestParam("update_quantity") String update_quantity,
-            @RequestParam("update_unit") String update_unit
+    @PostMapping("/updateone")
+    public void updateIngredient(
+            @RequestBody Ingredient ingredient
     ){
-
-        Ingredient ingredient =
-                new Ingredient(Integer.parseInt(id),name,
-                        Integer.parseInt(update_quantity),
-                        Integer.parseInt(update_price),
-                        update_unit,update_partner);
-
         int n =service.updateIngredient(ingredient);
-
         log.info("업데이트 완료>>>>>>"+String.valueOf(n));
-
-        return "redirect:/" ;
-
     }
 
     @PostMapping("/insertone")
-    public String insert(
-            @RequestParam("insert_name") String name,
-            @RequestParam("insert_partner") String partner,
-            @RequestParam("insert_quantity") String quantity,
-            @RequestParam("insert_price") String price,
-            @RequestParam("insert_unit") String unit
+    public void insert(
+            @RequestBody Ingredient ingredient
     ){
-        int id = 0;
-        Ingredient ingredient = new Ingredient(id,name,Integer.parseInt(quantity),
-                Integer.parseInt(price),unit,partner);
         service.create(ingredient);
         log.info(String.valueOf(ingredient));
-        return "redirect:/" ;
     }
 }

@@ -28,7 +28,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="reset" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="button" id ="insert_submit" data-dismiss="modal" class="btn btn-primary">Update</button>
 
                 </div>
             </form>
@@ -41,7 +41,7 @@
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <form action="/ingredient/deleteone">
+            <form action="/ingredient/deleteone" method="post">
                 <div class="modal-header">
                     <h5 class="modal-title" id="deleteModalTitle">재고 삭제</h5>
                     <br>
@@ -111,7 +111,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <input type="submit" class="btn btn-primary"></input>
+                <button type="button" id ="update_submit" data-dismiss="modal" class="btn btn-primary">Update</button>
             </div>
             </form>
         </div>

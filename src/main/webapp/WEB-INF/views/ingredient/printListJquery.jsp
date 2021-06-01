@@ -176,6 +176,51 @@
                     $('#update_unit').val(td[5].innerHTML)
                 })
 
+                $("#update_submit").click(function (){
+                    var json = {
+                        'id' : $('#update_id').val() *1,
+                        'name' : $('#update_name').val(),
+                        'quantity' : $('#update_quantity').val()*1,
+                        'partner' : $('#update_partner').val(),
+                        'price' :  $('#update_price').val()*1,
+                        'unit' : $('#update_unit').val()
+                    }
+                    console.log(json)
+                    $.ajax({
+                        type : 'post',
+                        url : '/ingredient/updateone',
+                        contentType: 'application/json',
+                        data: JSON.stringify(json),
+                        success(data){
+                            console.log(data)
+                        }
+
+                    })
+                    location.reload()
+                })
+
+                $("#insert_submit").click(function (){
+                    var json = {
+                        'id' : 0,
+                        'name' : $('#insert_name').val(),
+                        'quantity' : $('#insert_quantity').val()*1,
+                        'partner' : $('#insert_partner').val(),
+                        'price' :  $('#insert_price').val()*1,
+                        'unit' : $('#insert_unit').val()
+                    }
+                    console.log(json)
+                    $.ajax({
+                        type : 'post',
+                        url : '/ingredient/insertone',
+                        contentType: 'application/json',
+                        data: JSON.stringify(json),
+                        success(data){
+                            console.log(data)
+                        }
+
+                    })
+                })
+
 
     },
             error : function(xhr, status, error) {
@@ -191,7 +236,7 @@
     $(document).ready(function(){
         $("#selectName").keyup(searchByName)
 
+
     });
     //CheckBox Select Fn
-
 </script>
