@@ -16,13 +16,13 @@ public class IngredientService  {
     private SqlSessionTemplate sqlSession;
 
     protected static final String NAMESPACE = "com.acorngaru.konggaru.mapper.IngredientMapper";
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Ingredient> searchIngredient(HashMap<String, String> map) {
         List<Ingredient> searchlist = sqlSession.selectList(NAMESPACE + ".searchIngredient", map);
         return searchlist;
 
     }
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Ingredient> allIngredient() {
         return sqlSession.selectList(NAMESPACE +".ingredientAllList");
     }

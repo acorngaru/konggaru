@@ -16,12 +16,12 @@ public class DashboardService  {
     private SqlSessionTemplate sqlSession;
 
     protected static final String NAMESPACE = "com.acorngaru.konggaru.mapper.DashboardMapper";
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Income> allIncome() {
         List<Income> incomes =sqlSession.selectList(NAMESPACE+".AllIncome");
         return incomes;
     }
-    @Transactional
+    @Transactional(readOnly = true)
     public int thisMonth() {
         int thisMonthIncome = sqlSession.selectOne(NAMESPACE+".ThisMonth");
         return thisMonthIncome;
