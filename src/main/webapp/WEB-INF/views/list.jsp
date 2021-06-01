@@ -305,7 +305,7 @@
             		    		"Content-Type": "application/json; charset=utf-8"
             		    	},
         	                method: "delete",
-        	                body: JSON.stringify([$(this).data("product")])
+        	                body: JSON.stringify(products)
         	            })
         	                .then(response => response.text())
         	                .then(status => {
@@ -342,7 +342,7 @@
             		    		"Content-Type": "application/json; charset=utf-8"
             		    	},
         	                method: "delete",
-        	                body: JSON.stringify([$(this).data("product")])
+        	                body: JSON.stringify(products)
         	            })
         	                .then(response => response.text())
         	                .then(status => {
