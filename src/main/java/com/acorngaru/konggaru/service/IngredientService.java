@@ -1,7 +1,7 @@
 package com.acorngaru.konggaru.service;
 
 
-import com.acorngaru.konggaru.mapper.IngredientMapper;
+import com.acorngaru.konggaru.mapper.IngredientPageMapper;
 import com.acorngaru.konggaru.model.Ingredient;
 import com.acorngaru.konggaru.model.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import java.util.List;
 @Transactional
 public class IngredientService  {
     @Autowired
-    IngredientMapper mapper;
+    IngredientPageMapper mapper;
     public Page<Ingredient> searchIngredient(String name,int pageNo, int n, List<Ingredient> list) {
         Page p = new Page();
         p.setPageCount(5);

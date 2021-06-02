@@ -23,12 +23,38 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
-                <li class="nav-header">MULTI LEVEL EXAMPLE</li>
+                <li class="nav-header">Menu</li>
+                <li class="nav-item">
+                    <a href="${pageContext.request.contextPath}/dashboard" class="nav-link">
+                        <i class="fas fa-circle nav-icon"></i>
+                        <p>dashboard</p>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="fas fa-circle nav-icon"></i>
-                        <p>Level 1</p>
+                        <p>Employee</p>
                     </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-circle nav-icon"></i>
+                        <p>Ingredient</p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="${pageContext.request.contextPath}/ingredient" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>List</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="${pageContext.request.contextPath}/ingredient/order" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Order</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">

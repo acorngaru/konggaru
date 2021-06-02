@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 @Mapper
 @Repository
-public interface IngredientMapper {
+public interface IngredientPageMapper {
 
     public List<Ingredient> searchIngredient(HashMap<String, String> map);
     public List<Ingredient> allIngredient();
