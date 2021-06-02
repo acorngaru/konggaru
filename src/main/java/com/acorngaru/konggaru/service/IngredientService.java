@@ -1,54 +1,58 @@
 package com.acorngaru.konggaru.service;
 
 
+import com.acorngaru.konggaru.mapper.IngredientMapper;
 import com.acorngaru.konggaru.model.Ingredient;
-import org.mybatis.spring.SqlSessionTemplate;
+import com.acorngaru.konggaru.model.Page;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
-
-@Repository
+@Service
+@Transactional
 public class IngredientService  {
     @Autowired
-    private SqlSessionTemplate sqlSession;
-
-    protected static final String NAMESPACE = "com.acorngaru.konggaru.mapper.IngredientMapper";
-    @Transactional(readOnly = true)
-    public List<Ingredient> searchIngredient(HashMap<String, String> map) {
-        List<Ingredient> searchlist = sqlSession.selectList(NAMESPACE + ".searchIngredient", map);
-        return searchlist;
+    IngredientMapper mapper;
+    public Page<Ingredient> searchIngredient(String name,int pageNo, int n, List<Ingredient> list) {
+        Page p = new Page();
+        p.setPageCount(5);
+        HashMap<String,String> map = new HashMap<>();
+        p.process(
+                5,
+                pageNo,
+                n,
+                list
+        );
+        map.put("first" , Integer.toString((p.getCurrentPageNo()-1)*p.getRows()+1));
+        map.put("last", Integer.toString(p.getCurrentPageNo()*p.getRows()));
+        map.put("name",name);
+        p.setItems(mapper.searchIngredient(map));
+        return p;
 
     }
-    @Transactional(readOnly = true)
     public List<Ingredient> allIngredient() {
-        return sqlSession.selectList(NAMESPACE +".ingredientAllList");
+        return mapper.allIngredient();
     }
-    @Transactional
     public int countIngredientByName(String name) {
-        int amount = sqlSession.selectOne(NAMESPACE +".countIngredientByName",name);
+        int amount = mapper.countIngredientByName(name);
         return amount;
     }
-    @Transactional
     public int ingredientDel(int n) {
-        int amount = sqlSession.delete(NAMESPACE+".ingredientDel",n);
+        int amount = mapper.ingredientDel(n);
         return amount;
     }
-    @Transactional
     public int updateIngredient(Ingredient ingredient) {
-        int n = sqlSession.update(NAMESPACE+".updateIngredient",ingredient);
+        int n = mapper.updateIngredient(ingredient);
         return n;
     }
-    @Transactional
     public int create(Ingredient ingredient) {
-        int n = sqlSession.insert(NAMESPACE+".create",ingredient);
+        int n = mapper.create(ingredient);
         return n;
     }
-    @Transactional
     public int ingredientDelAll(List<String> arrayList) {
-        int n = sqlSession.delete(NAMESPACE+".ingredientDelAll",arrayList);
+        int n = mapper.ingredientDelAll(arrayList);
         return n;
     }
 

@@ -4,10 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.acorngaru.konggaru.mapper.DashboardMapper">
 
-    <select id="AllIncome" resultType="Income">
+    <select id="allIncome" resultType="Income">
         select to_char(month,'YYYY-MM') as month ,income from income
     </select>
-    <select id="ThisMonth" resultType="int">
+    <select id="thisMonth" resultType="int">
         select SUM(total_price) from ordered
         where created_at between to_date('2021-05-01','YYYY-MM-DD')
                   and to_date('2021-05-31','YYYY-MM-DD')
@@ -20,7 +20,7 @@
         WHERE
             month = to_date(#{month},'MM')
     </update>
-    <select id="RankIncome" resultType="Rank">
+    <select id="getRank" resultType="Rank">
         select a.quan , product.name ,product.image_url
         from(
                 select count(*) quan, product.id

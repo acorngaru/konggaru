@@ -1,39 +1,42 @@
 package com.acorngaru.konggaru.service;
 
+import com.acorngaru.konggaru.mapper.DashboardMapper;
 import com.acorngaru.konggaru.model.Income;
 import com.acorngaru.konggaru.model.Rank;
-import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
 
-@Repository
+@Service
+@Transactional
 public class DashboardService  {
+
     @Autowired
-    private SqlSessionTemplate sqlSession;
+    DashboardMapper mapper;
+
+    public DashboardService(DashboardMapper mapper){
+        this.mapper=mapper;
+    }
 
     protected static final String NAMESPACE = "com.acorngaru.konggaru.mapper.DashboardMapper";
-    @Transactional(readOnly = true)
     public List<Income> allIncome() {
-        List<Income> incomes =sqlSession.selectList(NAMESPACE+".AllIncome");
+
+        List<Income> incomes =mapper.allIncome();
         return incomes;
     }
-    @Transactional(readOnly = true)
     public int thisMonth() {
-        int thisMonthIncome = sqlSession.selectOne(NAMESPACE+".ThisMonth");
+        int thisMonthIncome = mapper.thisMonth();
         return thisMonthIncome;
     }
-    @Transactional
     public int updateMonthlyIncome(Income income) {
-        int updateDone = sqlSession.update(NAMESPACE+".updateMonthlyIncome",income);
+        int updateDone = mapper.updateMonthlyIncome(income);
         return updateDone;
     }
-    @Transactional
     public HashMap<String, String> getRank() {
-        List<Rank> r = sqlSession.selectList(NAMESPACE+".RankIncome");
+        List<Rank> r = mapper.getRank();
         HashMap<String, String> data = new HashMap<>();
         for (Rank rank : r)
             data.put(rank.getName(),rank.getImage_url());

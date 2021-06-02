@@ -20,7 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where name LIKE '%'|| #{name} || '%'
     </select>
 
-    <select id="ingredientAllList" resultType="Ingredient">
+    <select id="allIngredient" resultType="Ingredient">
         select * from ingredient order by id
     </select>
 

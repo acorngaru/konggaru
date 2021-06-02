@@ -37,7 +37,7 @@ public class DashboardController {
     }
     @ResponseBody
     @GetMapping("/product_rank")
-    public HashMap<String, String> productRank(HttpServletResponse res) throws IOException{
+    public HashMap<String, String> productRank(){
         HashMap<String,String> data = s.getRank();
 
         return data;

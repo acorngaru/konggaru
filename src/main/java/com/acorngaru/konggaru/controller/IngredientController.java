@@ -31,19 +31,13 @@ public class IngredientController {
     @PostMapping(value = "/list")
     public Page showHome(
             @RequestParam("selectName") String name,
-            @RequestParam("pageNo") int pageNo)  {
-        Page p = new Page();
-        p.setPageCount(5);
-        p.setCurrentPageNo(pageNo);
-        HashMap<String,String> map = new HashMap<>();
-        p.process(5,pageNo, service.countIngredientByName(name),service.allIngredient());
-
-        map.put("first" , Integer.toString((p.getCurrentPageNo()-1)*p.getRows()+1));
-        map.put("last", Integer.toString(p.getCurrentPageNo()*p.getRows()));
-        map.put("name",name);
-        p.setItems(service.searchIngredient(map));
-
+            @RequestParam("pageNo") int pageNo) {
+        int count = service.countIngredientByName(name);
+        List<Ingredient> list = service.allIngredient();
+        Page p = service.searchIngredient(name, pageNo,count,list);
         return p;
+
+
     }
 
     @PostMapping("/deleteone")
@@ -59,13 +53,9 @@ public class IngredientController {
 
     @PostMapping("/deleteall")
     public void deleteIngredientAll(
-            @RequestParam("name") String data
+            @RequestParam("name") List<String> list
     ){
-        String[] x = data.split(",");
-        List<String> list = Arrays.asList(x);//List.생성
-        int n = service.ingredientDelAll(list);
-        log.info("실행된 레코드갯수: "+n);
-
+        service.ingredientDelAll(list);
     }
 
     @PostMapping("/updateone")
