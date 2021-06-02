@@ -4,25 +4,25 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="employeeMapper">
 
-    <select id="printAllList" resultType="Employee">
+    <select id="printAllList" resultType="com.acorngaru.konggaru.model.Employee">
 		select * from employee
 		order by role
 	</select>
 
-    <update id="updateEmp" parameterType="Employee">
+    <update id="updateEmp" parameterType="com.acorngaru.konggaru.model.Employee">
 		update employee
 		set name=#{name},role=#{role},
 		salary=#{salary},hiredate=#{hiredate},phone=#{phone}
 		where id=#{id}
 	</update>
 
-    <insert id="addEmp" parameterType="Employee">
+    <insert id="addEmp" parameterType="com.acorngaru.konggaru.model.Employee">
 		insert into employee
 		VALUES(#{id}, #{name}, #{phone}, #{role}, #{salary}, #{hiredate},
 		#{resignation}, #{work_time})
 	</insert>
 
-    <select id="searchEmp" parameterType="hashmap" resultType="Employee">
+    <select id="searchEmp" parameterType="hashmap" resultType="com.acorngaru.konggaru.model.Employee">
 		select * from (
 		SELECT ROW_NUMBER() OVER (ORDER BY role ASC, id ASC) NUM, A.*
 		FROM  employee A
@@ -38,7 +38,7 @@
 		where name LIKE '%' || #{name} || '%'
 	</select>
 
-    <select id="searchId" resultType="Employee"  parameterType="String">
+    <select id="searchId" resultType="com.acorngaru.konggaru.model.Employee"  parameterType="String">
 		select * from employee where id=#{clockId}
 	</select>
 
@@ -55,13 +55,12 @@
 		|| '%'
 	</select>
 
-    <select id="searchRollBook" parameterType="hashmap" resultType="Rollbook">
+    <select id="searchRollBook" parameterType="hashmap" resultType="com.acorngaru.konggaru.model.Rollbook">
 		select * from (
-		SELECT ROW_NUMBER() OVER (ORDER BY clockin ASC,
-		id ASC) NUM, A.*
+		SELECT ROW_NUMBER() OVER (ORDER BY clockin DESC) NUM, A.*
 		FROM rollBook A
 		WHERE name LIKE '%' || #{name} || '%'
-		ORDER BY clockin, id ASC
+		ORDER BY clockin DESC
 		)
 		where NUM BETWEEN #{first} and #{last}
 	</select>
@@ -69,11 +68,11 @@
     <select id="searchSumWorkTime" parameterType="String" resultType="int">
 		select sum(worktime) from rollbook
 		where id=#{id}
-		GROUP by name
+		GROUP by id
 	</select>
 
     <update id="updateWorkTime" parameterType="hashmap">
-		UPDATE employee set work_time=#{work_time} where id=#{Id}
+		UPDATE employee set work_time=#{work_time} where id=#{id}
 	</update>
 
     <select id="RollBookCountItemsByNameInTime" parameterType="String"
@@ -85,13 +84,12 @@
 	</select>
 
     <select id="searchRollBookInTime" parameterType="hashmap"
-            resultType="Rollbook">
+            resultType="com.acorngaru.konggaru.model.Rollbook">
 		select * from (
-		SELECT ROW_NUMBER() OVER (ORDER BY clockin ASC,
-		id ASC) NUM, A.*
+		SELECT ROW_NUMBER() OVER (ORDER BY clockin DESC) NUM, A.*
 		FROM rollBook A
 		WHERE clockin LIKE '%' || #{name} || '%'
-		ORDER BY clockin, id ASC
+		ORDER BY clockin DESC
 		)
 		where NUM BETWEEN #{first} and #{last}
 	</select>
@@ -105,14 +103,32 @@
 	</select>
 
     <select id="searchRollBookoutTime" parameterType="hashmap"
-            resultType="Rollbook">
+            resultType="com.acorngaru.konggaru.model.Rollbook">
 		select * from (
-		SELECT ROW_NUMBER() OVER (ORDER BY clockout ASC,
-		id ASC) NUM, A.*
+		SELECT ROW_NUMBER() OVER (ORDER BY clockout DESC) NUM, A.*
 		FROM rollBook A
 		WHERE clockout LIKE '%' || #{name} || '%'
-		ORDER BY clockout, id ASC
+		ORDER BY clockout DESC
 		)
 		where NUM BETWEEN #{first} and #{last}
+	</select>
+	
+	<insert id="addInTime" parameterType="hashmap">
+		insert into rollbook(id,name,clockin)
+		values(#{id},#{name},#{clockin}) 
+	</insert>
+	
+	<select id="searchInTime" parameterType="String" resultType="String">
+		select clockin from rollBook where id=#{id} and clockout is null
+	</select>
+
+ 	<update id="updateOutTime" parameterType="hashmap">
+		update rollbook 
+		set workTime=#{workTime} , clockout=#{clockout}
+		where id=#{id} and clockout is null
+	</update> 
+	
+	<select id="checkintime" parameterType="String" resultType="int">
+		select count(*) from rollBook where id=#{id} and clockOut is null
 	</select>
 </mapper>

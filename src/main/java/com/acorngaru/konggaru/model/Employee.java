@@ -34,6 +34,6 @@ public class Employee {
     //퇴사일
     String resignation;
 
-    //근무 시간
+    //근무 시간간
     String work_time;
 }

@@ -5,9 +5,9 @@ function fillTableWithRollBook(data) {
         var html = "";
 
         html += '<tr>';
-        html += '<td style="display: none">' + dto.id + '</td>';
-        html += '<td>' + dto.Id + '</td>';
-        html += '<td>' + dto.Name + '</td>';
+        html += '<td style="display: none">' + dto.Id + '</td>';
+        html += '<td>' + dto.id + '</td>';
+        html += '<td>' + dto.name + '</td>';
         html += '<td>' + dto.clockIn + '</td>';
         html += '<td>' + dto.clockOut + '</td>';
         html += '<td>' + dto.workTime + '</td>';

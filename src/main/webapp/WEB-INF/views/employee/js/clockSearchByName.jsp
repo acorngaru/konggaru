@@ -4,9 +4,9 @@ function clockSearchByName(currentPageNo) {
         currentPageNo = 1;
     }
     console.log("search by name currentPageNo = "+currentPageNo + ", selectName = " + $("#ClockselectName").val())
-    $.ajax({
+     $.ajax({
         type : "post",
-        url : "ClockStartServlet",
+        url : "RollBook/ClockInOut",
         dataType : "json",
         data : {
         	ClockselectName : $("#ClockselectName").val(),
@@ -20,7 +20,9 @@ function clockSearchByName(currentPageNo) {
             var page = data
             console.log("get page success", page);
             editPageBtn(page.currentPageNo, page.startPage, page.endPage, page.pageCount, page.totalPages);
-
+			
+			console.log("page.items????===",page.items);
+			
             //Employees의 정보를 테이블에 출력해주는 함수
             fillTableWithRollBook(page.items)
 
@@ -29,7 +31,7 @@ function clockSearchByName(currentPageNo) {
             console.log(error);
             console.log(status);
         }
-    })
+    }) 
 }
 clockSearchByName(1);
 $("#ClockselectName").keyup(clockSearchByName)

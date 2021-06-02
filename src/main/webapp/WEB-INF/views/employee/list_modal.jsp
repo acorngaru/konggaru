@@ -18,7 +18,7 @@ $("#emp_role").val("part_time").prop("selected",true);
 <div id="addEmployeeModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="/employee/addEmp" method="post">
+            <form action="employee/addEmp" method="post">
                 <div class="modal-header">
                     <h4 class="modal-title">근로자 추가</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
