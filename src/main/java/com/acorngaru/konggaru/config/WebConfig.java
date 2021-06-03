@@ -30,7 +30,11 @@ public class WebConfig implements WebMvcConfigurer {
         registry
                 .addResourceHandler("/webjars/**")
                 .addResourceLocations("/webjars/");
+        registry
+                .addResourceHandler("/css/**")
+                .addResourceLocations("/css/");
     }
+
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
