@@ -198,26 +198,21 @@
                         method: "post",
                         body: formData
                     })
-                    .then(response => {
+                    .then(response => response.json())
+                    .then(({status, data}) => {
                         this.isLoading = false;
 
-                        if (response.ok) {
-                            return response.text();
+                        if (status === "OK") {
+                            swal("Success", "The product has been successfully added.")
+                                .then(() => location.href = "/product/list");
                         } else {
-                            return Promise.reject(response);
-                        }
-                    })
-                    .then(data => {
-                        swal("Success", "The product has been successfully added.")
-                    })
-                    .catch(error => {
-                        error.json().then((data) => {
                             const title = data.code + " - " + data.message;
                             const content = data.details;
 
                             swal(title, content);
-                        })
-                    });
+                        }
+                    })
+                    .catch(error => console.log(error));
                 },
                 handleFileChange: function (e) {
                     if (e.target.files && e.target.files[0]) {

@@ -8,30 +8,30 @@ import org.springframework.validation.BindingResult;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ErrorResponse {
+public class Error {
     private String message;
     private int status;
     private String code;
     private String details;
 
-    private ErrorResponse(ErrorCode code) {
+    private Error(ErrorCode code) {
         this.message = code.getMessage();
         this.status = code.getStatus();
         this.code = code.getCode();
         this.details = code.getDetails();
     }
 
-    private ErrorResponse(ErrorCode code, String details) {
+    private Error(ErrorCode code, String details) {
         this.message = code.getMessage();
         this.status = code.getStatus();
         this.code = code.getCode();
         this.details = details;
     }
 
-    public static ErrorResponse of(ErrorCode code) { return new ErrorResponse(code); }
+    public static Error of(ErrorCode code) { return new Error(code); }
 
-    public static ErrorResponse of(ErrorCode code, BindingResult bindingResult) {
-        return new ErrorResponse(code, getDetailsFromBindingResult(bindingResult));
+    public static Error of(ErrorCode code, BindingResult bindingResult) {
+        return new Error(code, getDetailsFromBindingResult(bindingResult));
     }
 
     private static String getDetailsFromBindingResult(BindingResult bindingResult) {

@@ -124,9 +124,10 @@
         },
         methods: {
             findIngredients: function (pageNo) {
-                fetch("/ingredient?pageNo=" + pageNo + "&rows=" + this.page.rows + "&searchTerm=" + this.searchTerm)
-                    .then(response => response.json())
-                    .then(page => this.page = page);
+                fetch("/ingredient/list?pageNo=" + pageNo + "&rows=" + this.page.rows + "&searchTerm=" + this.searchTerm, {
+                    method: "post"
+                }).then(response => response.json())
+                  .then(page => this.page = page);
             },
             searchIngredient: function (e) {
                 this.searchTerm = e.target.value;
