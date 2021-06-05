@@ -13,7 +13,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="/ingredient/insertone" method="post">
+            <form action="${pageContext.request.contextPath}/ingredient/insertone" method="post">
                 <div class="modal-body">
                     <label for="insert_name" class="col-form-label">제품명</label>
                     <input type="text" class="form-control" id="insert_name" name="insert_name">
@@ -41,7 +41,7 @@
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <form action="/ingredient/deleteone" method="post">
+            <form action="${pageContext.request.contextPath}/ingredient/deleteone" method="post">
                 <div class="modal-header">
                     <h5 class="modal-title" id="deleteModalTitle">재고 삭제</h5>
                     <br>
@@ -52,7 +52,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <input type="submit" class="btn btn-danger" value="삭제" ></input>
+                    <input type="submit" class="btn btn-danger" value="삭제"/>
                 </div>
             </form>
         </div>
@@ -64,7 +64,7 @@
 <div class="modal fade" id="deleteAllModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <form action="/ingredient/deleteall">
+            <form action="${pageContext.request.contextPath}/ingredient/deleteall" method="post">
                 <div class="modal-header">
                     <h5 class="modal-title" id="deleteAllModalTitle">재고 삭제</h5>
                     <br>
@@ -75,7 +75,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <input type="submit" class="btn btn-danger" value="삭제" ></input>
+                    <input type="submit" class="btn btn-danger" value="삭제"/>
                 </div>
             </form>
         </div>
@@ -88,7 +88,7 @@
 <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <form action="/ingredient/updateone" method="post">
+            <form action="${pageContext.request.contextPath}/ingredient/updateone" method="post">
             <div class="modal-header">
                 <h5 class="modal-title" id="updateModalTitle">재고 수정</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -97,7 +97,7 @@
             </div>
             <div class="modal-body">
                 <label class="col-form-label" for="update_id"></label>
-                <input name = "update_id" type="text" class="form-control" id="update_id">
+                <input name = "update_id" type="text" class="form-control" id="update_id" readonly>
                 <label for="update_name" class="col-form-label">제품명</label>
                 <input type="text" class="form-control" name ="update_name" id="update_name">
                 <label for="update_quantity" class="col-form-label">재고</label>

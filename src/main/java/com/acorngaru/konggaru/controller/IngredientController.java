@@ -3,74 +3,85 @@ package com.acorngaru.konggaru.controller;
 import com.acorngaru.konggaru.model.Ingredient;
 import com.acorngaru.konggaru.model.Page;
 import com.acorngaru.konggaru.service.IngredientService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/ingredient")
 public class IngredientController {
-
-    @Autowired
-    IngredientService service;
+    private final IngredientService ingredientService;
 
     @GetMapping
-    public String showHome() {
+    public String showIngredientList() {
         return "ingredient/ingredient";
     }
 
     @ResponseBody
-    @PostMapping(value = "/list")
-    public Page showHome(
-            @RequestParam("selectName") String name,
-            @RequestParam("pageNo") int pageNo) {
-        int count = service.countIngredientByName(name);
-        List<Ingredient> list = service.allIngredient();
-        Page p = service.searchIngredient(name, pageNo,count,list);
-        return p;
-
-
+    @PostMapping("/list")
+    public ResponseEntity<Page<Ingredient>> getIngredients(
+            @RequestParam(required = false, defaultValue = "") String searchTerm,
+            @RequestParam(required = false, defaultValue = "1") int pageNo,
+            @RequestParam(required = false, defaultValue = "5") int rows
+    ) throws Exception {
+        return new ResponseEntity<>(
+                ingredientService.findIngredients(pageNo, rows, searchTerm),
+                HttpStatus.OK
+        );
     }
 
     @PostMapping("/deleteone")
     public String deleteIngredient(
-            @RequestParam("name") String data
-    ){
+            @RequestParam("name") int id
+    ) {
+        log.info("deleteIngredient() - id: {}", id);
 
-        int amount = service.ingredientDel(Integer.parseInt(data));
-        log.info("삭제 목록>>"+String.valueOf(amount));
+        ingredientService.deleteIngredientById(id);
 
-        return "redirect:ingredient/ingredient" ;
+        return "redirect:/ingredient";
     }
 
     @PostMapping("/deleteall")
-    public void deleteIngredientAll(
-            @RequestParam("name") List<String> list
-    ){
-        service.ingredientDelAll(list);
+    public String deleteIngredients(
+            @RequestParam("name") List<Integer> ids
+    ) {
+        log.info("deleteIngredients() - ids: {}", ids);
+
+        ingredientService.deleteIngredientsById(ids);
+
+        return "redirect:/ingredient";
     }
 
     @PostMapping("/updateone")
-    public void updateIngredient(
+    public ResponseEntity<?> updateIngredient(
             @RequestBody Ingredient ingredient
-    ){
-        int n =service.updateIngredient(ingredient);
-        log.info("업데이트 완료>>>>>>"+String.valueOf(n));
+    ) {
+        log.info("updateIngredient() - ingredient: {}", ingredient);
+
+        ingredientService.update(ingredient);
+
+        return new ResponseEntity<>(
+                HttpStatus.OK
+        );
     }
 
     @PostMapping("/insertone")
-    public void insert(
+    public ResponseEntity<?> insertIngredient(
             @RequestBody Ingredient ingredient
-    ){
-        service.create(ingredient);
-        log.info(String.valueOf(ingredient));
+    ) {
+        log.info("insertIngredient() - ingredient: {}", ingredient);
+
+        ingredientService.create(ingredient);
+
+        return new ResponseEntity<>(
+                HttpStatus.OK
+        );
     }
 }

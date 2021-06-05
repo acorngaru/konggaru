@@ -1,14 +1,18 @@
 package com.acorngaru.konggaru.mapper;
 
 import com.acorngaru.konggaru.model.Product;
-
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.FetchType;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mapper
+@Repository
 public interface ProductMapper {
+
+    List<Product> findAllProducts();
 
     @Select({
             "<script>",
@@ -27,9 +31,9 @@ public interface ProductMapper {
             "       <if test = \"sortBy == 'high'\">", // 정렬 기준
             "       order by price desc",
             "       </if>",
-            "   ) p where rownum &lt;= (#{currentPageNo} * #{rows})",
+            "   ) p where rownum &lt;= (#{pageNo} * #{rows})",
             ")",
-            "where ((#{currentPageNo} - 1) * #{rows}) &lt; rn",
+            "where ((#{pageNo} - 1) * #{rows}) &lt; rn",
             "</script>"
     })
     @Results(value = {
@@ -48,11 +52,11 @@ public interface ProductMapper {
                     many = @Many(select = "com.acorngaru.konggaru.mapper.UsedIngredientMapper.findUsedIngredientsByProductId",
                                  fetchType = FetchType.EAGER))
     })
-    List<Product> findProducts(@Param("currentPageNo") int currentPageNo,
+    List<Product> findProducts(@Param("pageNo") int pageNo,
                                @Param("rows") int rows,
                                @Param("searchType") String searchType,
                                @Param("searchTerm") String searchTerm,
-                               @Param("sortBy") String sortBy);
+                               @Param("sortBy") String sortBy) throws Exception;
 
     @Select("select * from product where id = #{id}")
     @Results(value = {
@@ -71,7 +75,7 @@ public interface ProductMapper {
                     many = @Many(select = "com.acorngaru.konggaru.mapper.UsedIngredientMapper.findUsedIngredientsByProductId",
                             fetchType = FetchType.EAGER))
     })
-    Product findProductById(@Param("id") int id);
+    Optional<Product> findProductById(@Param("id") int id) throws Exception;
 
     @Select({
             "<script>",
@@ -84,12 +88,12 @@ public interface ProductMapper {
             "</if>",
             "</script>"
     })
-    int countProducts(@Param("searchType") String searchType, @Param("searchTerm") String searchTerm);
+    int countProducts(@Param("searchType") String searchType, @Param("searchTerm") String searchTerm) throws Exception;
 
     @Insert("insert into product (id, name, description, price, category_id, image_url) " +
             "values (#{id}, #{name}, #{description}, #{price}, #{categoryId}, #{imageUrl})")
     @SelectKey(statement = "select product_seq.currval from dual", resultType = int.class, keyProperty = "id", before = false)
-    int insert(Product product);
+    int insert(Product product) throws Exception;
 
     @Update({
             "<script>",
@@ -104,8 +108,8 @@ public interface ProductMapper {
             "where id = #{id}",
             "</script>"
     })
-    int update(Product product);
+    int update(Product product) throws Exception;
 
     @Delete("delete from product where id = #{id}")
-    int delete(Product product);
+    int delete(Product product) throws Exception;
 }
