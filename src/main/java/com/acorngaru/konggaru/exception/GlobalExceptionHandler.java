@@ -77,7 +77,6 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public String handleException(RuntimeException e, Model m) {
-        log.info("Exception has occurs");
         m.addAttribute("error", e);
 
         return "/error/500";

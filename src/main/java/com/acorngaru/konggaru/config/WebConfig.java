@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.multipart.MultipartResolver;
@@ -18,9 +17,8 @@ import java.util.List;
 @Configuration
 @EnableWebMvc
 @RequiredArgsConstructor
-@Import({ S3Config.class })
 @ComponentScan(
-        basePackages = { "com.acorngaru.konggaru.controller", "com.acorngaru.konggaru.exception" }
+        basePackages = { "com.acorngaru.konggaru.controller" }
 )
 public class WebConfig implements WebMvcConfigurer {
 
@@ -37,8 +35,7 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-    }
+    public void addInterceptors(InterceptorRegistry registry) { }
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {

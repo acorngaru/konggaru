@@ -3,7 +3,6 @@ package com.acorngaru.konggaru.util;
 import com.acorngaru.konggaru.exception.InvalidValueException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -19,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 
 
 @Slf4j
-@Setter
 @Component
 @RequiredArgsConstructor
 public class StringToObjectResolver implements HandlerMethodArgumentResolver {
