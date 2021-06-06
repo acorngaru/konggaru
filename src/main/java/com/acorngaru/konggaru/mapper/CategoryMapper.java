@@ -1,14 +1,16 @@
 package com.acorngaru.konggaru.mapper;
 
+
 import com.acorngaru.konggaru.model.Category;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.type.Alias;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Mapper
+@Repository
 public interface CategoryMapper {
 
     @Select("select * from category")

@@ -8,7 +8,8 @@ import org.springframework.stereotype.Controller;
 
 @Import({
         DatabaseConfig.class,
-        MybatisConfig.class
+        MybatisConfig.class,
+        S3Config.class
 })
 @Configuration
 @ComponentScan(

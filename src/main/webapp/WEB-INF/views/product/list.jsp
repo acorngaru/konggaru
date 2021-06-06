@@ -141,7 +141,7 @@
             data: {
                 searchType : searchType,
                 searchTerm : searchTerm,
-                currentPageNo : requestPageNo,
+                pageNo : requestPageNo,
                 sortBy : sortBy,
                 rows: 4
             },
@@ -152,7 +152,7 @@
             complete: function () {
                 $("#loader").hide();
             },
-            success: function(data) {
+            success: function({data}) {
                 // 테이블 내용 삭제
                 $("#p_info").empty()
 
@@ -213,7 +213,7 @@
                 })
                 // 7. details button
                 $(".detailsBtn").on("click", function() {
-                    location.href = `/product/detail?productId=\${$(this).val()}`
+                    location.href = `/product/detail/\${$(this).val()}`
                 }) //
                 // 8. delete button
                 $(".deleteBtn").on("click", function() {

@@ -1,12 +1,15 @@
 package com.acorngaru.konggaru.mapper;
 
+
 import com.acorngaru.konggaru.model.Ingredient;
 import com.acorngaru.konggaru.model.UsedIngredient;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Mapper
+@Repository
 public interface UsedIngredientMapper {
 
     @Select("select * from used_ingredient where product_id = #{productId} order by id")

@@ -8,16 +8,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
+<jsp:include page="/WEB-INF/views/common/head.jsp" />
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
-<jsp:include page="/WEB-INF/views/common/head.jsp" />
 <body  class="hold-transition sidebar-mini">
-<div class="wrapper">
-    <!-- Sidebar -->
-    <jsp:include page="/WEB-INF/views/common/sidebar.jsp" />
-
-    <!-- Content -->
     <div class="wrapper">
+
+        <!-- Sidebar -->
+        <jsp:include page="/WEB-INF/views/common/sidebar.jsp" />
 
         <!-- Content -->
         <div class="content-wrapper">
@@ -56,8 +54,7 @@
                                         size.style.width =360
                                         size.style.height =350
                                     })
-                                    })
-
+                                })
                             })
                         </script>
                         <div class="col-lg-4 col-sm-6">
@@ -159,20 +156,18 @@
 
                                 //차트 그리기
                                 var myChart = new Chart(ctx, config);
-
                             }
                         })
                     })
-
-                    </script>
+                </script>
             </div>
         <!-- /.content -->
-        <jsp:include page="/WEB-INF/views/ingredient/modal/modalSet.jsp"></jsp:include>
+            <jsp:include page="/WEB-INF/views/ingredient/modal/modalSet.jsp" />
+        </div>
 
         <!-- Footer -->
         <jsp:include page="/WEB-INF/views/common/footer.jsp" />
     </div>
-    </body>
-
+</body>
 </html>
 

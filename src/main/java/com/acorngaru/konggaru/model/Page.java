@@ -18,7 +18,7 @@ public class Page<T> {
     private int rows;
 
     // 페이지 번호
-    private int currentPageNo;
+    private int currentPageNo = 1;
 
     // 총 데이터 개수
     private int totalItems;

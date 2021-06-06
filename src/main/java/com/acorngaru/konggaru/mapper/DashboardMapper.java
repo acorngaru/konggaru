@@ -10,11 +10,11 @@ import java.util.List;
 @Repository
 public interface DashboardMapper {
 
-    public List<Income> allIncome();
+    List<Income> allIncome();
 
-    public int thisMonth();
+    int thisMonth();
 
-    public int updateMonthlyIncome(Income income);
+    int updateMonthlyIncome(Income income);
 
-    public List<Rank> getRank() ;
+    List<Rank> getRank();
 }

@@ -70,7 +70,7 @@
             url : "ingredient/list",
             dataType : "json",
             data : {
-                selectName : $("#selectName").val(),
+                searchTerm : $("#selectName").val(),
                 pageNo : pageNo
             },
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
