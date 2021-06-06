@@ -5,14 +5,17 @@ import com.acorngaru.konggaru.model.Product;
 import com.acorngaru.konggaru.model.Response;
 import com.acorngaru.konggaru.service.ProductService;
 import com.acorngaru.konggaru.util.StringToObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
+
 
 @Slf4j
 @Controller
@@ -20,6 +23,7 @@ import java.util.Optional;
 @RequestMapping("/product")
 public class ProductController {
     private final ProductService productService;
+    private final ObjectMapper objectMapper;
 
     @GetMapping("/add")
     public String showProductAdd() {
@@ -28,6 +32,13 @@ public class ProductController {
 
     @GetMapping("/list")
     public String showProductList() { return "product/list"; }
+
+    @GetMapping("/detail/{id}")
+    public String showProductDetail(@PathVariable("id") int id, Model model) throws Exception {
+        model.addAttribute("product", objectMapper.writeValueAsString(productService.findProductById(id)));
+        log.info("product: {}", model.getAttribute("product"));
+        return "product/detail";
+    }
 
     @GetMapping
     @ResponseBody
@@ -62,11 +73,12 @@ public class ProductController {
         return Response.OK();
     }
 
-    @PutMapping
+    @PostMapping("/update")
     @ResponseBody
     public Response<?> updateProduct(@StringToObject(name = "product") Product product,
                                      @RequestPart(required = false) Optional<MultipartFile> image) throws Exception {
         log.info("updateProduct() - {}", product);
+        log.info("updateProduct() - {}", image.map(MultipartFile::getName).orElse("No Image"));
 
         productService.update(product, image);
 

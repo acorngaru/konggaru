@@ -213,7 +213,7 @@
                 })
                 // 7. details button
                 $(".detailsBtn").on("click", function() {
-                    location.href = `/product/detail?productId=\${$(this).val()}`
+                    location.href = `/product/detail/\${$(this).val()}`
                 }) //
                 // 8. delete button
                 $(".deleteBtn").on("click", function() {

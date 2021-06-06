@@ -75,7 +75,7 @@ public class ProductServiceImpl implements ProductService {
     public void update(Product product, Optional<MultipartFile> image) throws Exception {
         product.setImageUrl(image.isPresent() ?
                 s3Repository.upload(image.get()) :
-                ""
+                product.getImageUrl()
         );
 
         productMapper.update(product);
