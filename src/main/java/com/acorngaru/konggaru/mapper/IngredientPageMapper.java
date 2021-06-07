@@ -23,8 +23,6 @@ public interface IngredientPageMapper {
     public int ingredientDelAll(List<String> arrayList);
     @Insert(" insert into ingredient_order (ingredient_id,ingredient_name,ingredient_quantity,created_at,addmission_at)" +
             "        values (#{ingredient_id},#{ingredient_name},#{ingredient_quantity},#{created_at},#{addmission_at})")
-    public int orderAddIngredient(int ingredient_id, String ingredient_name,
-                                  int ingredient_quantity, String created_at,
-                                    String addmission_at);
+    public int orderAddIngredient(Ingredient_Order ingredient_order);
 
 }

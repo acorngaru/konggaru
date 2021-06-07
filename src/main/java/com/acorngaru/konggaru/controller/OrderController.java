@@ -28,6 +28,8 @@ public class OrderController {
 
     @Autowired
     IngredientService service;
+    @Autowired
+    Ingredient_OrderService s;
 
 
     @RequestMapping(value = "/order")
@@ -56,28 +58,12 @@ public class OrderController {
     }
 
 
-
-    @RequestMapping(value = "/Ingredient/orderAdd", method = RequestMethod.POST)
-    public void OrderAdd(@RequestBody Ingredient_Order ingredient_order){
-
-        System.out.println("OrederController페이지 ===============================");
-
-        System.out.println(ingredient_order);
-
-        int ingredient_id = ingredient_order.getIngredient_id();
-        String ingredient_name = ingredient_order.getIngredient_name();
-        int ingredient_quantity = ingredient_order.getIngredient_quantity();
-        String created_at = ingredient_order.getCreated_at();
-        String addmission_at = ingredient_order.getAddmission_at();
-
-
-        Ingredient_OrderService service = new Ingredient_OrderService();
-        /*Ingredient_Order ingre_order = new Ingredient_Order(ingredient_id,ingredient_name,ingredient_quantity,created_at,addmission_at);*/
-        int n =service.orderAddIngredient(ingredient_id,ingredient_name,ingredient_quantity,created_at,addmission_at);
+    @RequestMapping(value = "/ingredient/orderAdd", method = RequestMethod.POST)
+    public String OrderAdd(@RequestBody Ingredient_Order ingredient_order){
+        int n =s.orderAddIngredient(ingredient_order);
         System.out.println("저장 완료>>>>>>"+n);
 
-
-
+        return "/ingredient/order";
     }
 
 

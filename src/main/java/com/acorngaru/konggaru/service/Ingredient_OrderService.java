@@ -15,12 +15,10 @@ public class Ingredient_OrderService {
     @Autowired
     IngredientPageMapper mapper;
 
-    public int orderAddIngredient(int ingredient_id, String ingredient_name,
-                                  int ingredient_quantity, String created_at,
-                                  String addmission_at) {
+    public int orderAddIngredient(Ingredient_Order ingredient_order) {
         System.out.println("service 실행됨");
 
-        int n = mapper.orderAddIngredient(ingredient_id,ingredient_name,ingredient_quantity,created_at,addmission_at);
+        int n = mapper.orderAddIngredient(ingredient_order);
         System.out.println("mapper 실행됨"+n);
         return n;
     }
