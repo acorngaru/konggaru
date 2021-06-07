@@ -32,14 +32,11 @@
 <form action ="/login" method="POST">
     <div class="border">
         <h1>로그인</h1>
-        <c:if test="${empty msg ? true : false}" var="result">
-            <h2><c:out value="${msg}" /></h2>
-        </c:if>
-        <input type="text"  name="nickName" id="nickName" placeholder="아이디를 입력해주세요."><br>
+        <input type="text"  name="username" id="username" placeholder="아이디를 입력해주세요."><br>
         <input type="password" name="pwd" id="password" placeholder="비밀번호를 입력해주세요."><br><br>
         <input type="submit" value="로그인">
-
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
     </div>
 </form>
 </body>

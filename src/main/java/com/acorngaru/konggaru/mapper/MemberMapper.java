@@ -11,11 +11,15 @@ import org.springframework.stereotype.Repository;
 public interface MemberMapper {
 
     @Insert("INSERT INTO member(pwd, nick_name, email, phone_number, jumin, mileage, member_id, auth)" +
-            "VALUES(#{pwd}, #{nickName}, #{email}, #{phoneNumber}, #{jumin}, #{mileage},#{memberId},'MEMBER');")
-    public int signIn(Member member);
+            "VALUES(#{pwd}, #{nickName}, #{email}, #{phoneNumber}, #{jumin}, #{mileage}, #{memberId},#{auth})")
+    public int signUp(Member member);
 
     @Select(
-         "Select * from member where nickName = #{id}"
+         "Select * from member where nick_name = #{id}"
     )
     Member getMemberById(String id);
+    @Select(
+            "Select count(*) from member where nick_name = #{nickName}"
+    )
+    int checkNickName(String nickName);
 }

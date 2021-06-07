@@ -1,11 +1,13 @@
 package com.acorngaru.konggaru.security;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 
 public class MemberAuthenticationProvider implements AuthenticationProvider {
     @Autowired
@@ -14,13 +16,13 @@ public class MemberAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String id = (String)authentication.getPrincipal();
-        String pwd= (String)authentication.getCredentials();
+        String pwd= authentication.getCredentials().toString();
         MemberDetails md = (MemberDetails) memberDetailsService.loadUserByUsername(id);
-        if(!matchPassword(pwd,md.member.getPwd())){
-            throw new BadCredentialsException(id);
-        }
-
-        return new UsernamePasswordAuthenticationToken(id,pwd,md.getAuthorities());
+        System.out.println(">>>>>>>>>>> get pwd" + pwd);
+        System.out.println(md.member.getPwd());
+        List<GrantedAuthority> roles = (List<GrantedAuthority>) md.getAuthorities();
+        System.out.println(roles);
+        return new UsernamePasswordAuthenticationToken(id,md.member.getPwd(),roles);
     }
 
     @Override

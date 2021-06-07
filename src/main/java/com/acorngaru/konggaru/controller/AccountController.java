@@ -1,12 +1,15 @@
 package com.acorngaru.konggaru.controller;
 
 
+import com.acorngaru.konggaru.model.Member;
 import com.acorngaru.konggaru.security.MemberDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -27,7 +30,15 @@ public class AccountController {
     }
 
     @PostMapping("/register")
-    public String register(User user) {
-        return "redirect:/";
+    public String register(@RequestBody Member user) {
+        int result = memberDetailsService.idChk(user.getNickName());
+        System.out.println(result);
+        if (result ==0){
+
+            memberDetailsService.signUp(user);
+            System.out.println(">>>>성공"+user);
+        }
+
+        return "account/login";
     }
 }

@@ -15,13 +15,13 @@ public class MemberDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         ArrayList<GrantedAuthority> authList = new ArrayList<GrantedAuthority>();
-        authList.add(new SimpleGrantedAuthority(member.getAuth()));
+        authList.add(()->("ROLE_MEMBER"));
         return authList;
     }
 
     @Override
     public String getPassword() {
-        return member.getPwd();
+        return "{noop}"+member.getPwd();
     }
 
     @Override
