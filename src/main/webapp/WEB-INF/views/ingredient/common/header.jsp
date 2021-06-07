@@ -13,6 +13,7 @@
         <li class="nav-item d-none d-sm-inline-block">
             <a href="/order" class="nav-link">발주</a>
         </li>
+
     </ul>
 
     <!-- Right navbar links -->
