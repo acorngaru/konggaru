@@ -58,4 +58,3 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Bean
     public LocalValidatorFactoryBean validator() { return new LocalValidatorFactoryBean(); }
-}
