@@ -8,26 +8,63 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript">
+
+
+
     $(document).ready(function(){
+
+        var created_at = null;
         $.ajax({
             type: "post",
-            url: "Ingredient/selectAll",
-            dataType: "json",
-            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            url: "/ingredient/selectAll",
             success : function(data, status, xhr) {
                 for ( var i in data.items) {
                     var dto = data.items[i];
                     console.log(dto.name)
+
                     var html = "";
-                    html += '<option value="'+dto.name+'" >'+dto.name+'</option>';
+                    html += '<option value="'+dto.name+'" id="'+dto.id+'">'+dto.name+'</option>';
                     $("#select_ingre").append(html);
                 }
-            }//success
+            },//success
+            error:function(data, status, xhr){
+                console.log("selectAll>>>>>에러!!")
+            }
 
-        }) //select all  -> 데이터 가져오는 용도
+        }) //select all  -> 데이터 가져오는 용도(ingredient)
+
+
+        $.ajax({
+            type: "post",
+            url: "/ingredient/selectAllOrder",
+            success : function(data, status, xhr) {
+                for ( var i in data.items) {
+                    var dto = data.items[i];
+                    console.log("selectAllOrder==="+dto)
+                    created_at = dto.created_at;
+
+                    var html = "";
+                    html += "<tr>";
+                    html += "<td width='500'>"+dto.ingredient_name+"</td>";
+                    html += "<td width='400'>"+dto.ingredient_quantity+"</td>";
+                    html += "<td width='400'><span classc'result"+i+"'>"+dto.created_at+"</span></td>";
+                    html += '<td width="400"><button type="button" class="confirm_btn" id="'+dto.ingredient_id+'">승인</button></td>';
+                    html += '</tr>';
+
+
+                    $("#dynamicTable").append(html);
+                }
+            },//success
+            error:function(data, status, xhr){
+                console.log("selectAllOrder>>>>>에러!!")
+            }
+        }) //select all  -> 데이터 가져오는 용도(ingredient_order)
+
+
+
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////
-
 
         const Now_Date = new Date();
         var year = Now_Date.getFullYear();
@@ -38,60 +75,90 @@
 
         var i =0;
 
+
+//////////////////////////////////////////////////////////
+
+
+        //DB Insert
+        //누적테이블UI
+
         $(".order").on("click",function(){
 
-            i += 1;
 
-            var table = []
             var html = '';
 
             var select = $("#select_ingre").val();
             var quantity = $("#quantity").val();
+            var ingreId = $("#select_ingre option:selected").attr("id")
+            created_at="N";
 
             html += '<tr>';
             html += '<td width="500">'+select+'</td>';
             html += '<td width="400">'+quantity+'</td>';
-            html += '<td width="400"><span class="result'+ i+ '"></span></td>';
+            html += "<td width='400'><span>"+created_at+"</span></td>";
             html += '<td width="400"><button type="button" class="confirm_btn">승인</button></td>';
             html += '</tr>';
 
 
             $("#dynamicTable").append(html);
 
-
-            //////////////////////////////////////////////////////////
-
             var json = {
-                "ingredient_id":1,
+                "ingredient_id" : ingreId,
                 "ingredient_name": $("#select_ingre").val(),
                 "ingredient_quantity" : $("#quantity").val(),
-                "created_at" : mesg,
-                "addmission_at" : "naddmission"
+                "created_at" : "N",
+                "addmission_at" : "N"
             }
             console.log("order.jsp =>"+json)
 
             $.ajax({
                 type: 'post',
-                url: '/Ingredient/orderAdd',
+                url: 'ingredient/orderAdd',
                 contentType: 'application/json',
                 data: JSON.stringify(json),
                 success(data) {
-                    console.log(data)
-                },
-                error: function (request, status, error) {
-                    alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                    //console.log(data)
                 }
             });
-
-
-            /*location.reload()*/
-
-
+            location.reload()
         })//order
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
+        //DB 승인요청
+        $(document).on("click",".confirm_btn",function(){
+
+
+
+
+            console.log("id값"+$(this).attr("id"))
+            console.log("confirm_btn 실행됨!")
+
+            $.ajax({
+                type: 'post',
+                url: '/ingredient/orderCreatedAt',
+                data: {
+                    'ingredient_id': $(this).attr("id"),
+                    'created_at': mesg
+                    },
+                success(data) {
+                    //console.log("confirm===="+data)
+                    location.reload()
+                }
+            });
+
+        })//confirm_btn
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
+        //DB 승인완료
         $(".last_order").on("click",function(){
+
+            var data = {
+                'addmission_at' : mesg
+            }
 
             Swal.fire({
                 title: '발주를 계속 진행하겠습니까?',
@@ -110,18 +177,16 @@
                     }).then((result) => {
                         $.ajax({
                             type: "post",
-                            url: "Ingredient/orderlist",
-                            dataType: "json",
-                            traditional:true,
-                            data:{
-                                order_name : $(document).on("change","#select_ingre option:selected").val(),
-                                order_quantity : $("#").val(),
-                                order_date : $(".result").text().val()
+                            url: "/ingredient/addMissionAt",
+                            data: {
+                                'addmission_at' : mesg
                             },
-                            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                            success : function(data, status, xhr) {
-                                console.log("success");
-                                location.href="/order";
+                            success(data) {
+                                console.log("모달성공>>>>>")
+                                location.reload()
+                            },
+                            error:function (){
+                                console.log("모달 에러!!!")
                             }
                         }) //ajax
 
@@ -131,12 +196,8 @@
         });//orderquantity
 
 ////////////////////////////////////////////////////////////////////////////////////////////
-        $("#addBtn").on("click",function (){
-
-            console.log("addBtn 실행됨!")
 
 
-        })//addBtn
 
 
 

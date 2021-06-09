@@ -24,6 +24,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select * from ingredient order by id
     </select>
 
+    <select id="selectAllOrder" resultType="Ingredient_Order">
+        select * from ingredient_order order by ingredient_id
+    </select>
+
 
     <delete id="ingredientDel" parameterType="int">
         delete
@@ -55,6 +59,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
+    <insert id="orderAddIngredient" parameterType="Ingredient_Order">
+        insert into ingredient_order (ingredient_id,ingredient_name,ingredient_quantity,created_at,addmission_at)
+                    values (#{ingredient_id},#{ingredient_name},#{ingredient_quantity},#{created_at},#{addmission_at})
+    </insert>
 
+    <update id="orderCreatedAt" parameterType="map">
+        update ingredient_order set created_at = #{created_at} where ingredient_id = #{ingredient_id}
+    </update>
+
+    <update id="addMissionAt" parameterType="string">
+        update ingredient_order set addmission_at = #{addmission_at}
+    </update>
+
+    <update id="updateIngredientAdd" parameterType="map">
+        update ingredient set quantity =(#{quantity}+quantity) where name = #{name}
+    </update>
+
+    <delete id="ingredientOrderDel">
+        delete from ingredient_order
+    </delete>
 
 </mapper>
