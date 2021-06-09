@@ -19,6 +19,12 @@ public class Employee {
     //이름
     String name;
 
+    //비밀번호
+    String passwd;
+
+    //권한
+    String auth;
+
     //전화번호
     String phone;
 

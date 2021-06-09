@@ -12,6 +12,8 @@ function fillTableWithEmp(data) {
         html += '<td>' + dto.salary + '</td>';
         html += '<td style="display: none">' + dto.hiredate + '</td>';
         html += '<td style="display: none">' + dto.resignation + '</td>';
+        html += '<td style="display: none">' + dto.passwd + '</td>';
+        html += '<td style="display: none">' + dto.auth + '</td>';
         html += '<td>' + dto.work_time + '</td>';
         html += '<td>' + '<a href="#editEmployeeModal" class="editBtn" data-toggle="modal">' +
             '<i class="material-icons" data-toggle="tooltip" title="Edit">' + '&#xE8B6;' + '</i>' + '</a>' +

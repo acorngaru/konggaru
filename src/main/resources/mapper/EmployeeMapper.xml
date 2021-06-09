@@ -10,8 +10,7 @@
 	</select>
 
     <update id="updateEmp" parameterType="Employee">
-		up
-		date employee
+		update employee
 		set name=#{name},role=#{role},
 		salary=#{salary},hiredate=#{hiredate},phone=#{phone}
 		where id=#{id}

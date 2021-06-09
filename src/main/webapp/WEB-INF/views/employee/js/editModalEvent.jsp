@@ -17,6 +17,8 @@ function editModalEvent() {
     $('#detail_emp_role').val(tdArr[3]);
     $('#detail_emp_sal').val(tdArr[4]);
     $('#detail_emp_hiredate').val(tdArr[5]);
+    $('#passwd').val(tdArr[7]);
+    $('#auth').val(tdArr[8]);
 
 
 }
