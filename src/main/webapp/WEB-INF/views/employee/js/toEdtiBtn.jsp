@@ -1,5 +1,6 @@
 function toEditBtn() {
     $("#detail_emp_phone").attr("readonly", false);
+    $("#detail_emp_passwd").attr("readonly", false);
     $("#detail_emp_role").attr("readonly", false);
     $("#detail_emp_sal").attr("readonly", false);
     $("#detail_emp_hiredate").attr("readonly", false);

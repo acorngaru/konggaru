@@ -29,6 +29,10 @@ $("#emp_role").val("part_time").prop("selected",true);
                         <input type="text" name="name" class="form-control" required>
                     </div>
                     <div class="form-group">
+                        <label>비밀번호</label>
+                        <input type="text" name="passwd" class="form-control" required>
+                    </div>
+                    <div class="form-group">
                         <label>전화번호</label>
                         <input type="text" name="phone" class="form-control" required></input>
                     </div>
@@ -50,6 +54,7 @@ $("#emp_role").val("part_time").prop("selected",true);
                     <input type="hidden" name="resignation" value="today">
                     <input type="hidden" name="work_time" value="0">
                     <input type="hidden" name="id" value=0>
+                    <input type="hidden" name="auth" value="ROLE_ADMIN">
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-default" data-dismiss="modal" value="취소">
@@ -94,6 +99,8 @@ $("#emp_role").val("part_time").prop("selected",true);
                         <label>고용일</label>
                         <input type="text" name="hiredate" class="form-control" id="detail_emp_hiredate" readonly>
                     </div>
+                    <input type="hidden" name="auth" id="auth">
+                    <input type="hidden" name="passwd" id="passwd">
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-default" data-dismiss="modal" value="close">

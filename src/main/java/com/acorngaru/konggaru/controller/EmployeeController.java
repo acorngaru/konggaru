@@ -52,9 +52,11 @@ public class EmployeeController {
             @RequestParam("phone") String phone,
             @RequestParam("role") String  role,
             @RequestParam("salary") int salary,
-            @RequestParam("hiredate") String hiredate
+            @RequestParam("hiredate") String hiredate,
+            @RequestParam("passwd") String passwd,
+            @RequestParam("auth") String auth
     ){
-        Employee employee = new Employee(id, name, phone, role, salary, hiredate, null, "0");
+        Employee employee = new Employee(id, name, passwd, auth, phone, role, salary, hiredate, null, "0");
         int n = service.updateEmp(employee);
         log.info("업데이트 완료>>>>>>"+String.valueOf(n));
         return "redirect:/employee";
