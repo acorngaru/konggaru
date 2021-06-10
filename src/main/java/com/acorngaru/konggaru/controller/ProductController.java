@@ -52,6 +52,14 @@ public class ProductController {
         );
     }
 
+    @GetMapping("/all")
+    @ResponseBody
+    public Response<List<Product>> getAllProducts(@RequestParam("categoryId") int categoryId) throws Exception {
+        return Response.OK(
+                productService.findProductsByCategoryId(categoryId)
+        );
+    }
+
     @PostMapping
     @ResponseBody
     public Response<?> insertProduct(@StringToObject(name = "product") Product product,

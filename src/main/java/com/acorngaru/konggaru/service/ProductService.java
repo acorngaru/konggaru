@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public interface ProductService {
 
+    List<Product> findProductsByCategoryId(int categoryId) throws Exception;
     Page<Product> findProducts(int pageNo, int rows, String searchType, String searchTerm, String sortBy) throws Exception;
     Product findProductById(int id) throws Exception;
     void insert(Product product, Optional<MultipartFile> image) throws Exception;

@@ -12,7 +12,24 @@ import java.util.Optional;
 @Repository
 public interface ProductMapper {
 
-    List<Product> findAllProducts();
+    @Select("select * from product where category_id = #{categoryId}")
+    @Results(value = {
+            @Result(property = "id", column = "id"),
+            @Result(property = "name", column = "name"),
+            @Result(property = "description", column = "description"),
+            @Result(property = "price", column = "price"),
+            @Result(property = "imageUrl", column = "image_url"),
+            @Result(property = "categoryId", column = "category_id"),
+            @Result(property = "categoryName", column = "category_id",
+                    javaType = String.class,
+                    one = @One(select = "com.acorngaru.konggaru.mapper.CategoryMapper.findCategoryNameById",
+                            fetchType = FetchType.EAGER)),
+            @Result(property = "recipe", column = "id",
+                    javaType = List.class,
+                    many = @Many(select = "com.acorngaru.konggaru.mapper.UsedIngredientMapper.findUsedIngredientsByProductId",
+                            fetchType = FetchType.EAGER))
+    })
+    List<Product> findProductsByCategoryId(@Param("categoryId") int categoryId);
 
     @Select({
             "<script>",

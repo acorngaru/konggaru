@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<jsp:include page="/WEB-INF/views/common/head.jsp" />
+
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
     <!-- Sidebar -->
