@@ -18,8 +18,8 @@
 
     <insert id="addEmp" parameterType="Employee">
 		insert into employee
-		VALUES(#{id}, #{name}, #{phone}, #{role}, #{salary}, #{hiredate},
-		#{resignation}, #{work_time})
+		VALUES(#{id}, #{name}, #{passwd}, #{auth}, #{phone},
+		       #{role}, #{salary}, #{hiredate},#{resignation}, #{work_time})
 	</insert>
 
     <select id="searchEmp" parameterType="hashmap" resultType="Employee">
@@ -38,81 +38,4 @@
 		where name LIKE '%' || #{name} || '%'
 	</select>
 
-    <select id="searchId" resultType="Employee"  parameterType="String">
-		select * from employee where id=#{clockId}
-	</select>
-
-    <insert id="addClock" parameterType="map">
-		insert into rollbook(id,name,clockin,clockout,worktime)
-		values(#{Id},#{Name},#{clockin},#{clockout},#{workTime})
-	</insert>
-
-    <select id="RollBookCountItemsByName" parameterType="String"
-            resultType="int">
-		SELECT count(*)
-		FROM RollBook
-		where name LIKE '%' || #{name}
-		|| '%'
-	</select>
-
-    <select id="searchRollBook" parameterType="hashmap" resultType="Rollbook">
-		select * from (
-		SELECT ROW_NUMBER() OVER (ORDER BY clockin ASC,
-		id ASC) NUM, A.*
-		FROM rollBook A
-		WHERE name LIKE '%' || #{name} || '%'
-		ORDER BY clockin, id ASC
-		)
-		where NUM BETWEEN #{first} and #{last}
-	</select>
-
-    <select id="searchSumWorkTime" parameterType="String" resultType="int">
-		select sum(worktime) from rollbook
-		where id=#{id}
-		GROUP by name
-	</select>
-
-    <update id="updateWorkTime" parameterType="hashmap">
-		UPDATE employee set work_time=#{work_time} where id=#{Id}
-	</update>
-
-    <select id="RollBookCountItemsByNameInTime" parameterType="String"
-            resultType="int">
-		SELECT count(*)
-		FROM RollBook
-		where clockin LIKE '%' || #{name}
-		|| '%'
-	</select>
-
-    <select id="searchRollBookInTime" parameterType="hashmap"
-            resultType="Rollbook">
-		select * from (
-		SELECT ROW_NUMBER() OVER (ORDER BY clockin ASC,
-		id ASC) NUM, A.*
-		FROM rollBook A
-		WHERE clockin LIKE '%' || #{name} || '%'
-		ORDER BY clockin, id ASC
-		)
-		where NUM BETWEEN #{first} and #{last}
-	</select>
-
-    <select id="RollBookCountItemsByNameoutTime" parameterType="String"
-            resultType="int">
-		SELECT count(*)
-		FROM RollBook
-		where clockout LIKE '%' || #{name}
-		|| '%'
-	</select>
-
-    <select id="searchRollBookoutTime" parameterType="hashmap"
-            resultType="Rollbook">
-		select * from (
-		SELECT ROW_NUMBER() OVER (ORDER BY clockout ASC,
-		id ASC) NUM, A.*
-		FROM rollBook A
-		WHERE clockout LIKE '%' || #{name} || '%'
-		ORDER BY clockout, id ASC
-		)
-		where NUM BETWEEN #{first} and #{last}
-	</select>
 </mapper>
