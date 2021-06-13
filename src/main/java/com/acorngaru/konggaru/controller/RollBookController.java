@@ -50,6 +50,7 @@ public class RollBookController {
 	@PostMapping(value = "/idCheck")
 	public HashMap<String, String> idCheck(@RequestParam("clockId") String clockId) throws IOException {
 		HashMap<String, String> map = new HashMap<String, String>();
+		System.out.println("들어왔다");
 		// employee db접속 후 입력한 사번 확인.
 		int checkid = service.idCheck(clockId);
 		if (checkid == 0) {

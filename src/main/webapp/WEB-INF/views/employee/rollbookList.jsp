@@ -31,8 +31,8 @@
 									Manage <b>RollBook</b>
 								</h2>
 							</div>
-							<div class="col-sm-6">
-								사번 : <input type="text" id="ClockId"> <a href="#"
+							<div class="col-sm-6" id="clickDiv">
+								사번 : <input type="text" id="clockId"> <a href="#"
 									class="btn btn-success" data-toggle="modal" id="ClockIdBtn">
 									<i class="material-icons">&#xE147;</i> <span>입력</span>
 								</a>
