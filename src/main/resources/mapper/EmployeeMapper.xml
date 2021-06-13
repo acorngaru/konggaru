@@ -10,17 +10,16 @@
 	</select>
 
     <update id="updateEmp" parameterType="Employee">
-		up
-		date employee
+		update employee
 		set name=#{name},role=#{role},
 		salary=#{salary},hiredate=#{hiredate},phone=#{phone}
 		where id=#{id}
 	</update>
 
     <insert id="addEmp" parameterType="Employee">
-		insert into employee
+		insert into employee(id, name, phone, role, salary, hiredate, resignation, work_time,auth,passwd)
 		VALUES(#{id}, #{name}, #{phone}, #{role}, #{salary}, #{hiredate},
-		#{resignation}, #{work_time})
+		#{resignation}, #{work_time},#{auth},#{passwd})
 	</insert>
 
     <select id="searchEmp" parameterType="hashmap" resultType="Employee">

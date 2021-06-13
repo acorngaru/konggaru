@@ -3,6 +3,7 @@ package com.acorngaru.konggaru.service;
 import com.acorngaru.konggaru.mapper.EmployeeMapper;
 import com.acorngaru.konggaru.model.Employee;
 import com.acorngaru.konggaru.model.Page;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,8 @@ public class EmployeeService{
     }
 
     public void addEmp(Employee employee) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        employee.setPasswd(encoder.encode(employee.getPasswd()));
         mapper.addEmp(employee);
     }
 

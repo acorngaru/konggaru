@@ -10,6 +10,9 @@ function fillTableWithEmp(data) {
         html += '<td>' + dto.phone + '</td>';
         html += '<td>' + dto.role + '</td>';
         html += '<td>' + dto.salary + '</td>';
+        html += '<td style="display: none">' + dto.passwd + '</td>';
+        html += '<td style="display: none">' + dto.auth + '</td>';
+
         html += '<td style="display: none">' + dto.hiredate + '</td>';
         html += '<td style="display: none">' + dto.resignation + '</td>';
         html += '<td>' + dto.work_time + '</td>';
