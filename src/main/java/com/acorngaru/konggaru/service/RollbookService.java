@@ -11,6 +11,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -72,13 +78,11 @@ public class RollbookService {
 		HashMap<String, String> map = new HashMap<String, String>();
 
 		// 현재 년 월 시 가져와서 String 으로 inTime(출근시간)에 저장
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.KOREA);
-		Date currentTime = new Date();
-		String clockin = formatter.format(currentTime);
+		String currentTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
 
 		map.put("name", name);
 		map.put("id", id);
-		map.put("clockin", clockin);
+		map.put("clockin", currentTime);
 
 		mapper.addInTime(map);
 
@@ -92,38 +96,29 @@ public class RollbookService {
 
 	public HashMap<String, String> updateOutTime(String id, String name) {
 		// 현재 년 월 시 가져와서 String 으로 outTime(퇴근시간)에 저장
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.KOREA);
-		Date currentTime = new Date();
-		String clockout = formatter.format(currentTime);
+		String stringCurrentDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
+		
+		// 현재 년 월 시를 계산을위해 Date타입으로 변환
+		LocalDateTime dateCurrentDateTime = LocalDateTime.parse(stringCurrentDateTime, DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
+		
+		//출근시간을 불러온 후 계산을 위해 LocalTime으로 변환
+		String stringInTime = mapper.searchInTime(id);	
+		LocalDateTime dateInTime = LocalDateTime.parse(stringInTime, DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
 
-		// yyyy.MM.dd HH:mm 형식의 퇴근시간을 split으로 잘라서 outHour(시), outMinute(분) 으로 저장
-		String[] splitOutTime = clockout.split(" ", 2);
-		System.out.println(splitOutTime[1]);
-
-		String[] outClock = splitOutTime[1].split(":");
-		int outHour = Integer.parseInt(outClock[0]);
-		int outMinute = Integer.parseInt(outClock[1]);
-
-		// db의 출근시간을 가져옴
-		String inTime = mapper.searchInTime(id);
-
-		// yyyy.MM.dd HH:mm 형식의 출근시간을 split으로 잘라서 inHour(시), inMinute(분) 으로 저장
-		String[] splitinTime = inTime.split(" ", 2);
-		System.out.println(splitinTime[1]);
-
-		String[] inClock = splitinTime[1].split(":");
-		int inHour = Integer.parseInt(inClock[0]);
-		int inMinute = Integer.parseInt(inClock[1]);
-
-		// 근무시간 계산을위해 퇴근시 - 출근시 : 퇴근분 - 출근분 형식으로 overTime에 저장
-		String workTime = Integer.toString(((outHour - inHour) * 60) + (outMinute - inMinute));
-
+		//출퇴근시간의 시간차, 분차 계산
+		long hours = ChronoUnit.HOURS.between(dateInTime, dateCurrentDateTime);
+		long minutes = ChronoUnit.MINUTES.between(dateInTime, dateCurrentDateTime);
+		
+		//근무시간 분으로 환산
+		String workTime = Long.toString((hours * 60) + minutes);
+		
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("name", name);
 		map.put("id", id);
 		map.put("workTime", workTime);
-		map.put("clockout", clockout);
-
+		map.put("clockout", stringCurrentDateTime);
+		
+		//퇴근시간과 근무시간 update
 		mapper.updateOutTime(map);
 
 		return map;
