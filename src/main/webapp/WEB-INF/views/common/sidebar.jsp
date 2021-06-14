@@ -29,7 +29,6 @@
                         <i class="fas fa-circle nav-icon"></i>
                         <p>dashboard</p>
                     </a>
-                </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="fas fa-circle nav-icon"></i>
@@ -42,13 +41,13 @@
                         <li class="nav-item">
                             <a href="${pageContext.request.contextPath}/employee" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Employee Manage</p>
+                                <p>List</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="${pageContext.request.contextPath}/employee/rollbookList" class="nav-link">
+                            <a href="${pageContext.request.contextPath}/rollbook" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Rollbook</p>
+                                <p>RollBook</p>
                             </a>
                         </li>
                     </ul>
