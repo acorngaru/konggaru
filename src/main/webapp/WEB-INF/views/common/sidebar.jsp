@@ -33,8 +33,25 @@
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="fas fa-circle nav-icon"></i>
-                        <p>Employee</p>
+                        <p>
+                            Employee
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="${pageContext.request.contextPath}/employee" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Employee Manage</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="${pageContext.request.contextPath}/employee/rollbookList" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Rollbook</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
