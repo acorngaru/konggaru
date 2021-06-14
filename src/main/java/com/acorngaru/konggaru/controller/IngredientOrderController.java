@@ -1,9 +1,8 @@
 package com.acorngaru.konggaru.controller;
 
 import com.acorngaru.konggaru.model.Ingredient;
-import com.acorngaru.konggaru.model.IngredinetOrder;
+import com.acorngaru.konggaru.model.IngredientOrder;
 import com.acorngaru.konggaru.service.IngredientOrderService;
-import com.acorngaru.konggaru.service.IngredientOrderServiceImpl;
 import com.acorngaru.konggaru.service.IngredientService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,17 +21,17 @@ public class IngredientOrderController {
     @Autowired
     IngredientService service;
     @Autowired
-    IngredientOrderService s;
+    IngredientOrderService ios;
 
 
     @RequestMapping(value = "/ingredient/order")
-    public String Order(ModelAndView modelAndView) throws  Exception{
+    public String Order(){
         return "ingredient/order";
     }
 
 
 
-    @RequestMapping(value = "/ingredient/selectAll")
+    @RequestMapping(value = "/ingredient/select-all")
     @ResponseBody
     public HashMap<String,List<Ingredient>> selectAll(){
 
@@ -44,50 +43,51 @@ public class IngredientOrderController {
     }
 
 
-    @RequestMapping(value = "/ingredient/orderAdd", method = RequestMethod.POST)
-    public String OrderAdd(@RequestBody IngredinetOrder ingredient_order){
-        int n =s.orderAddIngredient(ingredient_order);
+    @RequestMapping(value = "/ingredient/order-add", method = RequestMethod.POST)
+    public String OrderAdd(@RequestBody IngredientOrder ingredientOrder){
+        int n =ios.orderAddIngredient(ingredientOrder);
         log.info("저장 완료>>>>>>"+n);
 
         return "/ingredient/order";
     }
 
-    @RequestMapping(value = "/ingredient/selectAllOrder")
+    @RequestMapping(value = "/ingredient/select-all-order",method =  RequestMethod.POST)
     @ResponseBody
-    public HashMap<String,List<IngredinetOrder>> selectAllOrder(){
+    public HashMap<String,List<IngredientOrder>> selectAllOrder(){
 
         String orderItem = "items";
-        List<IngredinetOrder> list = s.selectAllOrder();
-        HashMap<String,List<IngredinetOrder>> data = new HashMap<>();
+        List<IngredientOrder> list = ios.selectAllOrder();
+        HashMap<String,List<IngredientOrder>> data = new HashMap<>();
         data.put(orderItem,list);
         return data;
     }
 
-    @RequestMapping(value = "/ingredient/orderCreatedAt", method = RequestMethod.POST)
-    public String OrderCreatedAt(@RequestParam("ingredient_id") int ingredient_id,
-                                 @RequestParam("created_at") String created_at){
+    @RequestMapping(value = "/ingredient/order-created-at", method = RequestMethod.POST)
+    public String OrderCreatedAt(@RequestParam("ingredient_id") int ingredientId,
+                                 @RequestParam("created_at") String createdAt){
 
         Map<String,Object> map = new HashMap<>();
-        map.put("ingredient_id",ingredient_id);
-        map.put("created_at",created_at);
-        int n =s.orderCreatedAt(map);
+        map.put("ingredientId",ingredientId);
+        map.put("createdAt",createdAt);
+        System.out.println(map);
+        int n =ios.orderCreatedAt(map);
 
 
         return "/ingredient/order";
     }
 
-    @RequestMapping(value = "/ingredient/addMissionAt", method = RequestMethod.POST)
-    public String AddMissionAt(@RequestParam("addmission_at") String addmission_at){
-        int n =s.addMissionAt(addmission_at);
+    @RequestMapping(value = "/ingredient/addmission-at", method = RequestMethod.POST)
+    public String AddMissionAt(@RequestParam("addmission_at") String addMissionAt){
+        int n =ios.addMissionAt(addMissionAt);
         if (n!=0){
-            List<IngredinetOrder>list=s.selectAllOrder();
+            List<IngredientOrder>list=ios.selectAllOrder();
             Map<String,Object> map = new HashMap<>();
             for (int i = 0; i < list.size(); i++) {
-                map.put("name",list.get(i).getIngredient_name());
-                map.put("quantity",list.get(i).getIngredient_quantity());
-                int m = s.updateIngredientAdd(map);
+                map.put("name",list.get(i).getIngredientName());
+                map.put("quantity",list.get(i).getIngredientQuantity());
+                int m = ios.updateIngredientAdd(map);
             }//for
-            int a = s.ingredientOrderDel();
+            int a = ios.ingredientOrderDel();
         }//if
         return "/ingredient/order";
     }

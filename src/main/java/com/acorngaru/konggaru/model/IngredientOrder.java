@@ -11,19 +11,19 @@ import org.apache.ibatis.type.Alias;
 @AllArgsConstructor
 @Builder
 @Alias("IngredinetOrder")
-public class IngredinetOrder {
+public class IngredientOrder {
     // 고유번호
-    private int ingredient_id;
+    private int ingredientId;
 
     // 이름
-    private String ingredient_name;
+    private String ingredientName;
 
     // 수량
-    private int ingredient_quantity;
+    private int ingredientQuantity;
 
     // 요청날짜
-    private String created_at;
+    private String createdAt;
 
     // 승인날짜
-    private String addmission_at;
+    private String addmissionAt;
 }

@@ -12,11 +12,10 @@
         var created_at = null;
         $.ajax({
             type: "post",
-            url: "/ingredient/selectAll",
+            url: "/ingredient/select-all",
             success : function(data, status, xhr) {
                 for ( var i in data.items) {
                     var dto = data.items[i];
-                    console.log(dto.name)
                     var html = "";
                     html += '<option value="'+dto.name+'" id="'+dto.id+'">'+dto.name+'</option>';
                     $("#select_ingre").append(html);
@@ -28,18 +27,18 @@
         }) //select all  -> 데이터 가져오는 용도(ingredient)
         $.ajax({
             type: "post",
-            url: "/ingredient/selectAllOrder",
+            url: "/ingredient/select-all-order",
             success : function(data, status, xhr) {
                 for ( var i in data.items) {
                     var dto = data.items[i];
-                    console.log("selectAllOrder==="+dto)
-                    created_at = dto.created_at;
+                    console.log("selectAllOrder==="+dto+data)
+                    created_at = dto.createdAt;
                     var html = "";
                     html += "<tr>";
-                    html += "<td width='500'>"+dto.ingredient_name+"</td>";
-                    html += "<td width='400'>"+dto.ingredient_quantity+"</td>";
-                    html += "<td width='400'><span classc'result"+i+"'>"+dto.created_at+"</span></td>";
-                    html += '<td width="400"><button type="button" class="confirm_btn" id="'+dto.ingredient_id+'">승인</button></td>';
+                    html += "<td width='500'>"+dto.ingredientName+"</td>";
+                    html += "<td width='400'>"+dto.ingredientQuantity+"</td>";
+                    html += "<td width='400'><span classc'result"+i+"'>"+dto.createdAt+"</span></td>";
+                    html += '<td width="400"><button type="button" class="confirm_btn" id="'+dto.ingredientId+'">승인</button></td>';
                     html += '</tr>';
                     $("#dynamicTable").append(html);
                 }
@@ -73,16 +72,16 @@
             html += '</tr>';
             $("#dynamicTable").append(html);
             var json = {
-                "ingredient_id" : ingreId,
-                "ingredient_name": $("#select_ingre").val(),
-                "ingredient_quantity" : $("#quantity").val(),
-                "created_at" : "N",
-                "addmission_at" : "N"
+                "ingredientId" : ingreId,
+                "ingredientName": $("#select_ingre").val(),
+                "ingredientQuantity" : $("#quantity").val(),
+                "createdAt" : "N",
+                "addmissionAt" : "N"
             }
             console.log("order.jsp =>"+json)
             $.ajax({
                 type: 'post',
-                url: 'orderAdd',
+                url: 'order-add',
                 contentType: 'application/json',
                 data: JSON.stringify(json),
                 success(data) {
@@ -98,7 +97,7 @@
             console.log("confirm_btn 실행됨!")
             $.ajax({
                 type: 'post',
-                url: '/ingredient/orderCreatedAt',
+                url: '/ingredient/order-created-at',
                 data: {
                     'ingredient_id': $(this).attr("id"),
                     'created_at': mesg
@@ -132,7 +131,7 @@
                     }).then((result) => {
                         $.ajax({
                             type: "post",
-                            url: "/ingredient/addMissionAt",
+                            url: "/ingredient/addmission-at",
                             data: {
                                 'addmission_at' : mesg
                             },
