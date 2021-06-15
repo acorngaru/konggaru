@@ -56,8 +56,9 @@
                         <li class="menu-active"><a href="#home">Home</a></li>
                         <li><a href="#about">About</a></li>
                         <li><a href="#coffee">Coffee</a></li>
-                        <li><a href="#">My Page</a></li>
-                        <li><a href="#">My Order</a></li>
+                        <li><a href="${pageContext.request.contextPath}/cart/list">My Cart</a></li>
+                        <li><a href="${pageContext.request.contextPath}/member/mypage">My Page</a></li>
+                        <li><a href="${pageContext.request.contextPath}/order/list">My Order</a></li>
                     </ul>
                 </nav><!-- #nav-menu-container -->
             </div>
@@ -266,6 +267,10 @@
                 this.fetchProductsByCategoryId(1);
             }
         })
+        
+        function shshsh() {
+			alert("shshsh")
+		}
     </script>
 </body>
 </html>
