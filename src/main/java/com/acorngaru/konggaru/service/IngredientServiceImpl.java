@@ -59,4 +59,7 @@ public class IngredientServiceImpl implements IngredientService {
     public void deleteIngredientsById(List<Integer> ids) {
         ingredientMapper.ingredientDelAll(ids);
     }
+
+    @Override
+    public List<Ingredient> allIngredient() {return ingredientMapper.allIngredient();}
 }
