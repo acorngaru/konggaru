@@ -9,7 +9,7 @@ import java.util.Collection;
 
 public class MemberDetails implements UserDetails {
 
-    Member member;
+    public Member member;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

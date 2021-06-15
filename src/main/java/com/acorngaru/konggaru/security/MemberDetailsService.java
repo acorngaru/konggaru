@@ -2,6 +2,7 @@ package com.acorngaru.konggaru.security;
 
 import com.acorngaru.konggaru.mapper.MemberMapper;
 import com.acorngaru.konggaru.model.Member;
+import com.acorngaru.konggaru.util.CurrentUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +21,7 @@ public class MemberDetailsService implements UserDetailsService {
         try {
 
             Member member= mapper.getMemberById(s);
+            member.setNickName(s);
             MemberDetails md = new MemberDetails();
             md.member = member;
             return md;
@@ -28,6 +30,7 @@ public class MemberDetailsService implements UserDetailsService {
         }
 
     }
+
 
     public int signUp(Member member){
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -42,5 +45,9 @@ public class MemberDetailsService implements UserDetailsService {
         else
             return false;
 
+    }
+
+    public MemberDetails getAccount(@CurrentUser MemberDetails memberDetails) {
+        return memberDetails;
     }
 }

@@ -35,6 +35,12 @@ public class AccountController {
             memberDetailsService.signUp(user);
         }
 
+
         return login();
+    }
+
+    @GetMapping("/error")
+    public String notPermit(){
+        return "account/403";
     }
 }

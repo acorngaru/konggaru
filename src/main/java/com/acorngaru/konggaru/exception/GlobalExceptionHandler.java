@@ -5,6 +5,7 @@ import com.acorngaru.konggaru.model.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -70,6 +71,15 @@ public class GlobalExceptionHandler {
         m.addAttribute("error", e);
 
         return "error/404";
+    }
+    /**
+     * 잘못된 주소로 접근한 경우
+     */
+    @ExceptionHandler(AccessDeniedException.class)
+    public String handleAccessDeniedException(AccessDeniedException e, Model m) {
+        m.addAttribute("error", e);
+
+        return "error/403";
     }
 
     /**

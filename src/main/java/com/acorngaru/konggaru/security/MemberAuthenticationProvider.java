@@ -6,6 +6,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 
@@ -19,9 +21,10 @@ public class MemberAuthenticationProvider implements AuthenticationProvider {
         String id = (String)authentication.getPrincipal();
 
         MemberDetails md = (MemberDetails) memberDetailsService.loadUserByUsername(id);
+
         if (memberDetailsService.idChk(id)){
-            List<GrantedAuthority> roles = (List<GrantedAuthority>) md.getAuthorities();
-            return new UsernamePasswordAuthenticationToken(id,md.member.getPassword(),roles);
+
+            return login(md);
         }else{
             EmpDetails ed = (EmpDetails) empDetailsService.loadUserByUsername(id);
             List<GrantedAuthority> roles = (List<GrantedAuthority>) ed.getAuthorities();
@@ -29,7 +32,14 @@ public class MemberAuthenticationProvider implements AuthenticationProvider {
 
         }
     }
-
+    public Authentication login(MemberDetails mds) {
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                new AccountAdapter(mds),
+                mds.member.getPassword(),
+                List.of(new SimpleGrantedAuthority("ROLE_MEMBER")));
+        SecurityContextHolder.getContext().setAuthentication(token);
+        return token;
+    }
     @Override
     public boolean supports(Class<?> aClass) {
         return true;
