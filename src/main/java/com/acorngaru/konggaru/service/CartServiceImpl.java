@@ -20,7 +20,12 @@ public class CartServiceImpl implements CartService {
 	public List<Cart> findCartListByMemberId(int id) throws Exception {
 		return cartMapper.findCartListByMemberId(id);
 	}
-	
+
+	@Override
+	public void insert(Cart cart) {
+		cartMapper.insert(cart);
+	}
+
 	@Override
 	public int updateCart(Cart cart) throws Exception {
 		return cartMapper.updateCart(cart);

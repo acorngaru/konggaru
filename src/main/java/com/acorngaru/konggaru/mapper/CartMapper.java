@@ -25,7 +25,11 @@ public interface CartMapper {
                                fetchType = FetchType.EAGER))
     })
 	List<Cart> findCartListByMemberId(int id) throws Exception;
-	
+
+	@Insert("insert into cart (id, product_id, member_id, product_quantity) " +
+			"values (#{id}, #{productId}, #{memberId}, #{productQuantity})")
+	int insert(Cart cart);
+
 	@Update("update cart set product_quantity = #{productQuantity} where id = #{id}")
 	int updateCart(Cart cart) throws Exception;
 

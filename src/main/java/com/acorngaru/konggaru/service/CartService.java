@@ -8,7 +8,7 @@ import com.acorngaru.konggaru.model.Product;
 public interface CartService {
 	
 	List<Cart> findCartListByMemberId(int id) throws Exception;
+	void insert(Cart cart) throws Exception;
 	int updateCart(Cart cart) throws Exception;
 	int deleteCart(int id) throws Exception;
-	
 }

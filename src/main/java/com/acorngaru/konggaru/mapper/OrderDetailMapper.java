@@ -14,8 +14,8 @@ import com.acorngaru.konggaru.model.Product;
 @Mapper
 @Repository
 public interface OrderDetailMapper {
-	
-	@Select("select * from order_detail where order_id = #{orderId}")
+
+    @Select("select * from order_detail where order_id = #{orderId}")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "productQuantity", column = "product_quantity"),
@@ -24,8 +24,12 @@ public interface OrderDetailMapper {
             @Result(property = "product", column = "product_id",
                     javaType = Product.class,
                     one = @One(select = "com.acorngaru.konggaru.mapper.ProductMapper.findProductById",
-                               fetchType = FetchType.EAGER))
+                            fetchType = FetchType.EAGER))
     })
     List<OrderDetail> findOrderDetailsByOrderId(@Param("orderId") int orderId);
-
+    @Insert("insert into order_detail (id, product_quantity, order_id, product_id) " +
+            "values (#{id}, #{productQuantity}, #{orderId}, #{productId})")
+    int insert(OrderDetail orderDetail);
+    int update(OrderDetail orderDetail);
+    int delete(OrderDetail orderDetail);
 }

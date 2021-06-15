@@ -16,5 +16,4 @@ public interface MemberMapper {
 
 	@Update("update member set password = #{password}, nick_name = #{nickName}, email = #{email}, phone_number = #{phoneNumber} where id = #{id}")
 	int updateMyPage(Member member) throws Exception;
-	
 }

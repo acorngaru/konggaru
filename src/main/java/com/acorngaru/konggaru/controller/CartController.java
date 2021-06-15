@@ -1,5 +1,6 @@
 package com.acorngaru.konggaru.controller;
 
+import com.acorngaru.konggaru.model.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,7 +26,6 @@ import com.fasterxml.jackson.core.JsonParser;
 @RequiredArgsConstructor
 @RequestMapping("/cart")
 public class CartController {
-	
 	private final CartService cartService;
 
     @GetMapping("/list")
@@ -38,6 +38,16 @@ public class CartController {
     public List<Cart> showCartListById(@RequestBody int id) throws Exception {
     	return cartService.findCartListByMemberId(id);
     }
+
+    @PostMapping("/insert")
+    @ResponseBody
+    public Response<?> insertCart(@RequestBody Cart cart) throws Exception {
+        log.info("insertCart() - cart: {}", cart);
+
+        cartService.insert(cart);
+
+        return Response.OK();
+    }
     
     @PostMapping("/update")
     @ResponseBody
@@ -45,20 +55,18 @@ public class CartController {
     	Cart cart = new Cart();
     	int id = Integer.parseInt(map.get("cartId"));
     	int productQuantity = Integer.parseInt(map.get("cartQuantity"));
+
     	cart.setId(id);
     	cart.setProductQuantity(productQuantity);
+
     	return cartService.updateCart(cart);
     }
     
     @DeleteMapping
     @ResponseBody
     public int deleteCart(@RequestBody int id) throws Exception {
-    	System.err.println(id);
+    	log.info("deleteCart() - {}", id);
+
     	return cartService.deleteCart(id);
     }
-    
-    ////////////////
-    
-    
-    
 }
