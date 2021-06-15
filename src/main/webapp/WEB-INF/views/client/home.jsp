@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/nice-select.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/animate.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/owl.carousel.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/client-main.css">
     <style>
         .quantity:focus {
             outline: 0 none;

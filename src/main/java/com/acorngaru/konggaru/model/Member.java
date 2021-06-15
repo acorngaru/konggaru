@@ -15,7 +15,7 @@ import java.util.List;
 @Alias("Member")
 public class Member {
     // 고유번호
-    private int id;
+    private int memberId;
 
     // 이름
     private String name;
@@ -37,10 +37,4 @@ public class Member {
 
     // 권한
     private String auth;
-
-    // 멤버 주문
-    private List<Order> orders;
-
-    // 멤버 장바구니
-    private List<Cart> carts;
 }

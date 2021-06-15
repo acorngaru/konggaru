@@ -1,19 +1,25 @@
 package com.acorngaru.konggaru.mapper;
 
-
-import org.apache.ibatis.annotations.*;
-import org.springframework.stereotype.Repository;
-
 import com.acorngaru.konggaru.model.Member;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
 
 @Mapper
 @Repository
 public interface MemberMapper {
-	
-	@Select("select id, name, email, phone_number, nick_name, auth, point from member where id = #{id}")
-	//@Select("select * from member where id = #{id}")
-	Member showMyPageById(int id);
 
-	@Update("update member set password = #{password}, nick_name = #{nickName}, email = #{email}, phone_number = #{phoneNumber} where id = #{id}")
-	int updateMyPage(Member member) throws Exception;
+    @Insert("INSERT INTO member(password,name ,nick_name, email, phone_number, point, id, auth)" +
+            "VALUES(#{password},#{name},#{nickName}, #{email}, #{phoneNumber},  #{point}, #{memberId},#{auth})")
+    int signUp(Member member);
+
+    @Select(
+            "Select * from member where nick_name = #{id}"
+    )
+    Member getMemberById(String id);
+    @Select(
+            "Select count(*) from member where nick_name = #{nickName}"
+    )
+    int checkNickName(String nickName);
 }
