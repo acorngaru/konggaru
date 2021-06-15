@@ -344,8 +344,9 @@
                     .then(response => {
                         console.log(response)
                         if (response.status === "OK")
-                            location.href = "/checkout"
+                            location.href = "/checkout";
                     })
+                    .catch(() => location.href = "/login");
                 }
             },
             created: function () {

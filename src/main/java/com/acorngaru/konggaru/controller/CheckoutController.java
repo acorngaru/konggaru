@@ -2,6 +2,8 @@ package com.acorngaru.konggaru.controller;
 
 import com.acorngaru.konggaru.model.OrderDetail;
 import com.acorngaru.konggaru.model.Response;
+import com.acorngaru.konggaru.security.MemberDetails;
+import com.acorngaru.konggaru.util.CurrentUser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +29,15 @@ public class CheckoutController {
     @PostMapping
     @ResponseBody
     public Response<?> insertOrderDetail(@RequestBody List<OrderDetail> orderDetails,
+                                         @CurrentUser MemberDetails memberDetails,
                                          HttpSession session) throws JsonProcessingException {
         log.info("insertOrderDetail() - {}", orderDetails);
+
+        if (memberDetails.member == null) {
+            log.info("insertOrderDetail() - Member is null");
+
+            return Response.ERROR();
+        }
 
         session.setAttribute("orderDetails", objectMapper.writeValueAsString(orderDetails));
 

@@ -5,9 +5,9 @@
     <title>Accongaru</title>
     <%@include file="../common/libs.jsp"%>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="/css/icons/favicon.ico"/>
-    <link rel="stylesheet" type="text/css" href="/css/util.css">
-    <link rel="stylesheet" type="text/css" href="/css/client-main.css">
+    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/css/icons/favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/util.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/main.css">
 </head>
 <body style="background-color: #666666;">
 
@@ -58,8 +58,6 @@
                         sign up
                     </button>
                 </div>
-
-
             </form>
 
             <div class="login100-more" style="background-image: url('../../../css/bg-01.jpg');">
@@ -76,7 +74,7 @@
                 'password' : $('#pwd').val() ,
                 'nickName' : $('#nickName').val(),
                 'email' : $('#email').val(),
-                'phoneNumber' : $('#phoneNumber').val()*1,
+                'phoneNumber' : $('#phoneNumber').val(),
                 'name' :  $('#name').val(),
                 'point' : 0,
                 'memberId' : 0,
@@ -94,6 +92,5 @@
 
             })
         })})
-
 </script>
 </body>

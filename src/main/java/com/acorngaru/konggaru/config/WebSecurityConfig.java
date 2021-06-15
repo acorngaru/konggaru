@@ -18,10 +18,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         // antmatcher를 통해 url 권한 획득 가능 추후 수정 예정
         http
+                .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/dashboard**").hasRole("MEMBER")
+                .antMatchers("/dashboard**", "/checkout**").hasRole("MEMBER")
                 .antMatchers("/ingredient**").hasRole("ADMIN")
-                .antMatchers( "/login**","/login/register**").permitAll()
+                .antMatchers( "/login**", "/login/register**", "/", "/product/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -30,7 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .permitAll();
-                http.csrf().disable();
+
         http.exceptionHandling().accessDeniedPage("/WEB-INF/views/error/403.jsp");
         CharacterEncodingFilter filter = new CharacterEncodingFilter();
         filter.setEncoding("UTF-8");
@@ -42,7 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // antMatchers
         web.ignoring().antMatchers("/assets/**");
         web.ignoring().antMatchers("/favicon.ico");
-        web.ignoring().antMatchers("/css/**","/images/**");
+        web.ignoring().antMatchers("/css/**","/image/**", "/js/**", "/font/**");
     }
 
     @Bean
