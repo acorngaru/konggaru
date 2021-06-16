@@ -25,45 +25,46 @@
     </style>
 </head>
 <body>
-    <div id="app" v-cloak>
-        <header id="header">
-            <div class="header-top">
-                <div class="container">
-                    <div class="row justify-content-end">
-                        <div class="col-lg-8 col-sm-4 col-8 header-top-right p-2">
-                            <ul>
-                                <li>
-                                    Mon-Fri: 10am to 5pm
-                                </li>
-                                <li>
-                                    Sat-Sun: 11am to 4pm
-                                </li>
-                                <li>
-                                    Tel: 02-538-0958
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+    <header id="header" v-cloak>
+        <div class="header-top">
             <div class="container">
-                <div class="row align-items-center justify-content-between d-flex">
-                    <div id="logo">
-                        <a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/image/acorngaru-logo.png" alt="logo"/></a>
-                    </div>
-                    <nav id="nav-menu-container">
-                        <ul class="nav-menu">
-                            <li class="menu-active"><a href="${pageContext.request.contextPath}/">Home</a></li>
-                            <li><a href="${pageContext.request.contextPath}/order/list">My Order</a></li>
-                            <li><a href="${pageContext.request.contextPath}/cart/list">My Cart</a></li>
+                <div class="row justify-content-end">
+                    <div class="col-lg-8 col-sm-4 col-8 header-top-right p-2">
+                        <ul>
+                            <li>
+                                Mon-Fri: 10am to 5pm
+                            </li>
+                            <li>
+                                Sat-Sun: 11am to 4pm
+                            </li>
+                            <li>
+                                Tel: 02-538-0958
+                            </li>
                         </ul>
-                    </nav><!-- #nav-menu-container -->
+                    </div>
                 </div>
             </div>
-        </header><!-- #header -->
+        </div>
 
+        <div class="container">
+            <div class="row align-items-center justify-content-between d-flex">
+                <div id="logo">
+                    <a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/image/acorngaru-logo.png" alt="logo"/></a>
+                </div>
+                <nav id="nav-menu-container">
+                    <ul class="nav-menu">
+                        <li v-if="member == null"><a href="${pageContext.request.contextPath}/login">Login</a></li>
+                        <li v-else><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
+                        <li class="menu-active"><a href="${pageContext.request.contextPath}/">Home</a></li>
+                        <li><a href="${pageContext.request.contextPath}/order/list">My Order</a></li>
+                        <li><a href="${pageContext.request.contextPath}/cart/list">My Cart</a></li>
+                    </ul>
+                </nav><!-- #nav-menu-container -->
+            </div>
+        </div>
+    </header><!-- #header -->
 
+    <div id="app" v-cloak>
         <!-- start banner Area -->
         <section class="banner-area" id="home" style="background: url(/image/header-bg.jpg) center; background-size: cover">
             <div class="container">
@@ -286,6 +287,19 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script type="text/javascript">
+        new Vue({
+            el: "#header",
+            data: {
+                member: null
+            },
+            created: function () {
+                fetch("/member/current")
+                .then(response => response.json())
+                .then(response => this.member = response.data)
+                .catch(() => this.member = null);
+            }
+        })
+
         new Vue({
             el: "#app",
             data: {

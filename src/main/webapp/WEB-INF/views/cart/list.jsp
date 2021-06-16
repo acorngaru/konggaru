@@ -26,7 +26,7 @@
 	</style>
 </head>
 <body>
-	<header id="header" style="background: rgba(20, 2, 0, 0.8); position: static">
+	<header id="header" style="background: rgba(20, 2, 0, 0.8); position: static" v-cloak>
 		<div class="header-top">
 			<div class="container">
 				<div class="row justify-content-end">
@@ -54,6 +54,8 @@
 				</div>
 				<nav id="nav-menu-container">
 					<ul class="nav-menu">
+						<li v-if="member == null"><a href="${pageContext.request.contextPath}/login">Login</a></li>
+						<li v-else><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
 						<li class="menu-active"><a href="${pageContext.request.contextPath}/">Home</a></li>
 						<li><a href="${pageContext.request.contextPath}/order/list">My Order</a></li>
 						<li><a href="${pageContext.request.contextPath}/cart/list">My Cart</a></li>
@@ -252,6 +254,19 @@
 	<script src="${pageContext.request.contextPath}/js/bootstrap-clockpicker.min.js"></script>
 	<script type="text/javascript">
 		const carts = JSON.parse('<%= request.getAttribute("carts") %>');
+
+		new Vue({
+			el: "#header",
+			data: {
+				member: null
+			},
+			created: function () {
+				fetch("/member/current")
+						.then(response => response.json())
+						.then(response => this.member = response.data)
+						.catch(() => this.member = null);
+			}
+		})
 
 		new Vue({
 			el: "#app",

@@ -1,6 +1,7 @@
 package com.acorngaru.konggaru.controller;
 
 import com.acorngaru.konggaru.model.Member;
+import com.acorngaru.konggaru.model.Response;
 import com.acorngaru.konggaru.security.MemberDetails;
 import com.acorngaru.konggaru.service.MemberService;
 import com.acorngaru.konggaru.service.OrderService;
@@ -33,6 +34,12 @@ public class MemberController {
 	@ResponseBody
 	public Member showMyPageById(@RequestBody int id) throws Exception {
 		return memberService.showMyPageById(id);
+	}
+
+	@GetMapping("/current")
+	@ResponseBody
+	public Response<Member> findCurrentMember(@CurrentUser MemberDetails memberDetails) {
+		return memberDetails.member == null ? Response.ERROR() : Response.OK(memberDetails.member);
 	}
 	
 	@PostMapping("/update")
