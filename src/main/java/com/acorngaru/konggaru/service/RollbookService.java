@@ -127,10 +127,8 @@ public class RollbookService {
 	public void updateWorkTime(HashMap<String, String> map) {
 
 		int sumWorkTime = mapper.searchSumWorkTime(map);
-		String work_time = (sumWorkTime / 60) + "시간" + (sumWorkTime % 60) + "분";
-
+		String work_time =(sumWorkTime/60)+":"+(sumWorkTime%60);
 		map.put("work_time", work_time);
-
 		mapper.updateWorkTime(map);
 	}
 

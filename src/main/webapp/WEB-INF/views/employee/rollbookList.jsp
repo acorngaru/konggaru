@@ -1,11 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <html>
+<jsp:include page="/WEB-INF/views/common/libs.jsp"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round"> 
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> 
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+<link rel="stylesheet" href="css/crudTable.css">
 <jsp:include page="/WEB-INF/views/common/head.jsp" />
-<!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="css/crudTable.css"> -->
 <script type="text/javascript">
 	<jsp:include page="js/toDetailBtn.jsp"/>
 	<jsp:include page="js/toEdtiBtn.jsp"/>
@@ -31,10 +32,10 @@
 									Manage <b>RollBook</b>
 								</h2>
 							</div>
-							<div class="col-sm-6" id="clickDiv">
+							<div id="clickDiv">
 								사번 : <input type="text" id="clockId"> <a href="#"
 									class="btn btn-success" data-toggle="modal" id="ClockIdBtn">
-									<i class="material-icons">&#xE147;</i> <span>입력</span>
+									<i class="material-icons"></i><span>입력</span>
 								</a>
 							</div>
 						</div>
