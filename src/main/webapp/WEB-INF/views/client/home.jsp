@@ -19,10 +19,13 @@
         .quantity:focus {
             outline: 0 none;
         }
+        [v-cloak] {
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <div id="app">
+    <div id="app" v-cloak>
         <header id="header">
             <div class="header-top">
                 <div class="container">
@@ -52,7 +55,7 @@
                     <nav id="nav-menu-container">
                         <ul class="nav-menu">
                             <li class="menu-active"><a href="${pageContext.request.contextPath}/">Home</a></li>
-                            <li><a href="${pageContext.request.contextPath}/member/mypage">My Page</a></li>
+                            <li><a href="${pageContext.request.contextPath}/order/list">My Order</a></li>
                             <li><a href="${pageContext.request.contextPath}/cart/list">My Cart</a></li>
                         </ul>
                     </nav><!-- #nav-menu-container -->
@@ -330,7 +333,26 @@
                     });
                 },
                 clickAddToCart: function () {
-                    swal("Success", "The product has been successfully added.", "success");
+                    fetch("/cart/insert", {
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        method: "post",
+                        body: JSON.stringify(this.productDetails)
+                    })
+                    .then(response => response.json())
+                    .then(response => {
+                        if (response.status === "OK")
+                            swal("Success", "The product has been successfully added to cart. Do you want to go to the cart?", "success", {
+                                buttons: ["NO", "OK"]
+                            })
+                            .then((ok) => {
+                                if (ok) {
+                                    location.href = "/cart/list";
+                                }
+                            });
+                    })
+                    .catch(() => location.href = "/login");
                 },
                 clickBuyNow: function () {
                     fetch("/checkout", {
@@ -342,7 +364,6 @@
                     })
                     .then(response => response.json())
                     .then(response => {
-                        console.log(response)
                         if (response.status === "OK")
                             location.href = "/checkout";
                     })

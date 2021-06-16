@@ -1,14 +1,12 @@
 package com.acorngaru.konggaru.mapper;
 
 
-import java.util.List;
-
+import com.acorngaru.konggaru.model.Order;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.FetchType;
 import org.springframework.stereotype.Repository;
 
-import com.acorngaru.konggaru.model.Order;
-import com.acorngaru.konggaru.model.OrderDetail;
+import java.util.List;
 
 @Mapper
 @Repository
@@ -21,7 +19,7 @@ public interface OrderMapper {
             @Result(property = "id", column = "id"),
             @Result(property = "memberId", column = "member_id"),
             @Result(property = "totalPrice", column = "total_price"),
-            @Result(property = "createddAt", column = "created_at"),
+            @Result(property = "createdAt", column = "created_at"),
             @Result(property = "pickupTime", column = "pickup_time"),
             @Result(property = "orderDetails", column = "id",
                     javaType = List.class,
@@ -29,8 +27,8 @@ public interface OrderMapper {
                             fetchType = FetchType.EAGER))
     })
     List<Order> findOrdersByMemberId(@Param("memberId") int memberId);
-    @Insert("insert into orders (id, memberId, totalPrice, createdAt, pickupTime) " +
+    @Insert("insert into orders (id, member_id, total_price, created_at, pickup_time) " +
             "values (#{id}, #{memberId}, #{totalPrice}, #{createdAt}, #{pickupTime})")
-    @SelectKey(statement = "select order_seq.currval from dual", resultType = int.class, keyProperty = "id", before = false)
+    @SelectKey(statement = "select orders_seq.currval from dual", resultType = int.class, keyProperty = "id", before = false)
     int insert(Order order);
 }

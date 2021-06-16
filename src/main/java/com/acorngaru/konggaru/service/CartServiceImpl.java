@@ -2,13 +2,11 @@ package com.acorngaru.konggaru.service;
 
 import com.acorngaru.konggaru.mapper.CartMapper;
 import com.acorngaru.konggaru.model.Cart;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import org.springframework.stereotype.Service;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -35,5 +33,4 @@ public class CartServiceImpl implements CartService {
 	public int deleteCart(int id) throws Exception {
 		return cartMapper.deleteCart(id);
 	}
-
 }

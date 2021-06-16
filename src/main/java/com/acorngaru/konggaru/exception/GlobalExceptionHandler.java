@@ -89,6 +89,6 @@ public class GlobalExceptionHandler {
     public String handleException(RuntimeException e, Model m) {
         m.addAttribute("error", e);
 
-        return "/error/500";
+        return "error/500";
     }
 }

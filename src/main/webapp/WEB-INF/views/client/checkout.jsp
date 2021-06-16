@@ -17,8 +17,8 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/client-main.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap-clockpicker.min.css">
     <style>
-        .quantity:focus {
-            outline: 0 none;
+        [v-cloak] {
+            display: none;
         }
     </style>
 </head>
@@ -51,11 +51,9 @@
                 </div>
                 <nav id="nav-menu-container">
                     <ul class="nav-menu">
-                        <li class="menu-active"><a href="#home">Home</a></li>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#coffee">Coffee</a></li>
-                        <li><a href="#">My Page</a></li>
-                        <li><a href="#">My Order</a></li>
+                        <li class="menu-active"><a href="${pageContext.request.contextPath}/">Home</a></li>
+                        <li><a href="${pageContext.request.contextPath}/order/list">My Order</a></li>
+                        <li><a href="${pageContext.request.contextPath}/cart/list">My Cart</a></li>
                     </ul>
                 </nav><!-- #nav-menu-container -->
             </div>
@@ -63,7 +61,7 @@
     </header>
     <!-- #header -->
 
-    <div class="container" id="app">
+    <div class="container" id="app" v-cloak>
         <div class="py-5 text-left">
             <h2>Checkout</h2>
         </div>
@@ -90,17 +88,17 @@
             </div>
 
             <div class="col-md-8 order-md-1">
-                <h4 class="mb-3">Billing address</h4>
-                <form class="needs-validation" novalidate>
+                <h4 class="mb-3">Order Details</h4>
+                <form class="needs-validation" novalidate @submit="submit">
                     <div class="mb-3">
                         <label for="name">Name</label>
-                        <input type="text" class="form-control" id="name" placeholder="Name">
+                        <input type="text" class="form-control" id="name" placeholder="Name" v-model="member.name">
                     </div>
 
                     <div class="mb-3">
                         <label for="nickname">Nickname</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="nickname" placeholder="Nickname" required>
+                            <input type="text" class="form-control" id="nickname" placeholder="Nickname" v-model="member.nickName" required>
                             <div class="invalid-feedback" style="width: 100%;">
                                 Your nickname is required.
                             </div>
@@ -123,7 +121,7 @@
 
                     <div class="mb-3">
                         <label for="phoneNumber">Phone Number</label>
-                        <input type="tel" class="form-control" id="phoneNumber" placeholder="01012345678">
+                        <input type="tel" class="form-control" id="phoneNumber" v-model="member.phoneNumber" placeholder="01012345678">
                         <div class="invalid-feedback">
                             Please enter a valid email address for shipping updates.
                         </div>
@@ -131,7 +129,7 @@
 
                     <div class="mb-3">
                         <label for="email">Email <span class="text-muted">(Optional)</span></label>
-                        <input type="email" class="form-control" id="email" placeholder="you@example.com">
+                        <input type="email" class="form-control" id="email" v-model="member.email" placeholder="you@example.com">
                         <div class="invalid-feedback">
                             Please enter a valid email address for shipping updates.
                         </div>
@@ -255,6 +253,7 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="${pageContext.request.contextPath}/js/bootstrap-clockpicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script type="text/javascript">
         $(() => {
             $('.clockpicker').clockpicker({
@@ -270,20 +269,25 @@
         const totalPrice = orderDetails && orderDetails.reduce((acc, cur) => {
             return acc + (cur.productQuantity * cur.product.price);
         }, 0)
+        const member = JSON.parse('<%= request.getAttribute("member") %>');
 
+        console.log(member)
         new Vue({
             el: "#app",
             data: {
+                member: member,
                 order: {
-                    memberId: 0,
+                    memberId: member.id,
                     totalPrice: totalPrice,
                     pickupTime: date.getHours() + ":" + date.getMinutes(),
                     orderDetails: orderDetails || [],
-                    length: orderDetails ? orderDetails.length : 0
+                    length: orderDetails ? orderDetails.length : 0,
                 }
             },
             methods: {
-                submit: function () {
+                submit: function (e) {
+                    e.preventDefault();
+
                     date.setHours(parseInt(this.order.pickupTime.split(':')[0]));
                     date.setMinutes(parseInt(this.order.pickupTime.split(':')[1]));
 
@@ -292,7 +296,10 @@
                         headers: {
                             "Content-Type": "application/json"
                         },
-                        body: JSON.stringify(this.order)
+                        body: JSON.stringify({
+                            ...this.order,
+                            pickupTime: moment(date).format("YYYY-MM-DDTHH:mm:ss")
+                        })
                     })
                     .then(response => response.json())
                     .then(response => console.log(response));

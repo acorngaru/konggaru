@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -22,13 +23,16 @@ public class CheckoutController {
     private final ObjectMapper objectMapper;
 
     @GetMapping
-    public String showCheckout() {
+    public String showCheckout(Model model,
+                               @CurrentUser MemberDetails memberDetails) throws JsonProcessingException {
+        model.addAttribute("member", objectMapper.writeValueAsString(memberDetails.member));
+
         return "client/checkout";
     }
 
     @PostMapping
     @ResponseBody
-    public Response<?> insertOrderDetail(@RequestBody List<OrderDetail> orderDetails,
+    public Response<?> insertOrderDetail(@RequestBody(required = false) List<OrderDetail> orderDetails,
                                          @CurrentUser MemberDetails memberDetails,
                                          HttpSession session) throws JsonProcessingException {
         log.info("insertOrderDetail() - {}", orderDetails);

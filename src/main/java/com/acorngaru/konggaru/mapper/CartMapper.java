@@ -1,13 +1,12 @@
 package com.acorngaru.konggaru.mapper;
 
-import java.util.List;
-
-import org.apache.ibatis.mapping.FetchType;
-import org.apache.ibatis.annotations.*;
-import org.springframework.stereotype.Repository;
-
 import com.acorngaru.konggaru.model.Cart;
 import com.acorngaru.konggaru.model.Product;
+import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.mapping.FetchType;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Mapper
 @Repository
@@ -34,6 +33,6 @@ public interface CartMapper {
 	int updateCart(Cart cart) throws Exception;
 
 	@Delete("delete from cart where id = #{id}")
-	int deleteCart(int id) throws Exception;
+	int deleteCart(int id);
     
 }

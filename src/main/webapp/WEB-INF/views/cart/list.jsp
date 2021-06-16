@@ -20,6 +20,9 @@
 		.quantity:focus {
 			outline: 0 none;
 		}
+		[v-cloak] {
+			display: none;
+		}
 	</style>
 </head>
 <body>
@@ -52,7 +55,7 @@
 				<nav id="nav-menu-container">
 					<ul class="nav-menu">
 						<li class="menu-active"><a href="${pageContext.request.contextPath}/">Home</a></li>
-						<li><a href="${pageContext.request.contextPath}/member/mypage">My Page</a></li>
+						<li><a href="${pageContext.request.contextPath}/order/list">My Order</a></li>
 						<li><a href="${pageContext.request.contextPath}/cart/list">My Cart</a></li>
 					</ul>
 				</nav><!-- #nav-menu-container -->
@@ -61,7 +64,7 @@
 	</header>
 	<!-- #header -->
 
-	<div class="container" id="app">
+	<div class="container" id="app" v-cloak>
 		<div class="py-5 text-left">
 			<h2>My Cart</h2>
 		</div>
@@ -76,40 +79,37 @@
 				<div class="mb-3">
 					<div class="pt-4 wish-list">
 
-						<h5 class="mb-4">Cart (<span>2</span> items)</h5>
+						<h5 class="mb-4">Cart (<span>{{ countCarts }}</span> items)</h5>
 
-						<div class="row mb-4">
+						<div class="row mb-4" v-for="cart in carts">
 							<div class="col-md-5 col-lg-3 col-xl-3">
 								<img class="img-fluid w-100"
-									 src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12a.jpg" alt="Sample">
+									 :src="cart.product.imageUrl" alt="product">
 							</div>
 							<div class="col-md-7 col-lg-9 col-xl-9">
 								<div>
 									<div class="d-flex justify-content-between">
 										<div>
-											<h5>Blue denim shirt</h5>
-											<p class="mb-3 text-muted text-uppercase small">Shirt - blue</p>
-											<p class="mb-2 text-muted text-uppercase small">Color: blue</p>
-											<p class="mb-3 text-muted text-uppercase small">Size: M</p>
+											<h5>{{ cart.product.name }}</h5>
 										</div>
 										<div>
 											<div class="def-number-input number-input safari_only mb-0 w-100">
 												<div class="btn-group">
-													<button class="genric-btn primary-border small px-2">+</button>
+													<button class="genric-btn primary-border small px-2" @click="plus(cart)">+</button>
 													<input type="text" class="quantity input-number border border-white text-center small px-2"
-														   style="width: 55px" />
-													<button class="genric-btn primary-border small px-2">-</button>
+														   style="width: 55px" v-model="cart.productQuantity" @input="checkQuantityRange(cart)"/>
+													<button class="genric-btn primary-border small px-2" @click="minus(cart)">-</button>
 												</div>
 											</div>
 										</div>
 									</div>
 									<div class="d-flex justify-content-between align-items-center">
 										<div>
-											<a href="#" type="button" class="small text-black text-uppercase mr-3">
+											<a type="button" class="small text-black text-uppercase mr-3" @click="deleteCart(cart)">
 												<i class="fas fa-trash-alt mr-1"></i> Remove item
 											</a>
 										</div>
-										<p class="mb-0"><span><strong id="summary">$17.99</strong></span></p>
+										<p class="mb-0"><span><strong id="summary">{{ cart.productQuantity * cart.product.price }}</strong></span></p>
 									</div>
 								</div>
 							</div>
@@ -161,7 +161,7 @@
 						<ul class="list-group list-group-flush">
 							<li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
 								Temporary amount
-								<span>&#8361; 25.98</span>
+								<span>&#8361; {{ getTotalPrice }}</span>
 							</li>
 							<li class="list-group-item d-flex justify-content-between align-items-center px-0">
 								Shipping
@@ -174,11 +174,11 @@
 										<p class="mb-0">(including VAT)</p>
 									</strong>
 								</div>
-								<span><strong>&#8361; </strong></span>
+								<span><strong>&#8361; {{ getTotalPrice }}</strong></span>
 							</li>
 						</ul>
 
-						<button type="button" class="genric-btn primary w-100 text-uppercase">go to checkout</button>
+						<button type="button" class="genric-btn primary w-100 text-uppercase" @click="goToCheckout">go to checkout</button>
 
 					</div>
 				</div>
@@ -193,7 +193,7 @@
 	</div>
 
 	<!-- start footer Area -->
-	<footer class="footer-area section-gap mt-150" style="background: url('/image/footer-bg.jpg'); background-size: cover">
+	<footer class="footer-area section-gap" style="background: url('/image/footer-bg.jpg'); background-size: cover; margin-top: 300px">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-8 col-md-8 col-sm-6">
@@ -258,17 +258,81 @@
 			data: {
 				carts: carts
 			},
-			methods: {
-
+			computed: {
+				countCarts: function () {
+					return this.carts ? this.carts.length : 0;
+				},
+				getTotalPrice: function () {
+					return this.carts ? this.carts.reduce((acc, cur) => {
+						return acc + (cur.productQuantity * cur.product.price);
+					}, 0) : 0;
+				}
 			},
-			created: function () {
-				fetch("/cart/show", {
-					headers: {
-						"Content-Type" : "application/json"
-					},
-					method: "post",
-					body: ""
-				})
+			methods: {
+				deleteCart: function (cart) {
+					fetch("/cart", {
+						headers: {
+							"Content-Type": "application/json"
+						},
+						method: "delete",
+						body: JSON.stringify(cart)
+					})
+					.then(response => response.json())
+					.then(response => {
+						if (response.status === "OK")
+							swal("Success", "The product has been successfully removed.", "success");
+					})
+				},
+				plus: function (cart) {
+					cart.productQuantity < 99 && cart.productQuantity++;
+
+					fetch("/cart/update", {
+						headers: {
+							"Content-Type": "application/json"
+						},
+						method: "post",
+						body: JSON.stringify(cart)
+					})
+				},
+				minus: function (cart) {
+					cart.productQuantity > 1 && cart.productQuantity--;
+
+					fetch("/cart/update", {
+						headers: {
+							"Content-Type": "application/json"
+						},
+						method: "post",
+						body: JSON.stringify(cart)
+					})
+				},
+				checkQuantityRange: function (cart) {
+					if (cart.productQuantity > 99)
+						cart.productQuantity = 99;
+					if (cart.productQuantity < 1)
+						cart.productQuantity = 1;
+
+					fetch("/cart/update", {
+						headers: {
+							"Content-Type": "application/json"
+						},
+						method: "post",
+						body: JSON.stringify(cart)
+					})
+				},
+				goToCheckout: function () {
+					fetch("/checkout", {
+						headers: {
+							"Content-Type": "application/json"
+						},
+						method: "post",
+						body: JSON.stringify(this.carts)
+					})
+					.then(response => response.json())
+					.then(response => {
+						if (response.status === "OK")
+							location.href = "/checkout";
+					})
+				}
 			}
 		})
 	</script>
