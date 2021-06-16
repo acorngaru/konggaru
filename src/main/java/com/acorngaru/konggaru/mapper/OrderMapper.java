@@ -14,7 +14,7 @@ public interface OrderMapper {
 
     @Select("select * from orders")
     List<Order> findAllOrders();
-    @Select("select * from orders where member_id = #{memberId}")
+    @Select("select * from orders where member_id = #{memberId} order by id desc")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "memberId", column = "member_id"),

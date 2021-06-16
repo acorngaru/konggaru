@@ -30,4 +30,18 @@ public interface MemberMapper {
             "Select count(*) from member where nick_name = #{nickName}"
     )
     int checkNickName(String nickName);
+
+    @Update("update member set " +
+            "name = #{name}, " +
+            "password = #{password}, " +
+            "email = #{email}, " +
+            "phone_number = #{phoneNumber} " +
+            "where id = #{memberId}")
+    int update(Member member);
+
+    @Select("select count(*) from member where email = #{email}")
+    int countEmail(@Param("email") String email);
+
+    @Select("select count(*) from member where phone_number = #{phoneNumber}")
+    int countPhoneNumber(@Param("email") String phoneNumber);
 }

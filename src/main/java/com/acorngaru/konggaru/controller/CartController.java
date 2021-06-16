@@ -26,7 +26,8 @@ public class CartController {
     public String showCartList(Model model,
                                @CurrentUser MemberDetails memberDetails) throws Exception {
         model.addAttribute(
-                "carts", objectMapper.writeValueAsString(cartService.findCartListByMemberId(memberDetails.member.getMemberId())));
+                "carts", objectMapper.writeValueAsString(cartService.findCartListByMemberId(memberDetails.member.getMemberId()))
+        );
 
     	return "cart/list";
     }
@@ -59,9 +60,11 @@ public class CartController {
     
     @DeleteMapping
     @ResponseBody
-    public int deleteCart(@RequestBody Cart cart) throws Exception {
+    public Response<?> deleteCart(@RequestBody Cart cart) throws Exception {
     	log.info("deleteCart() - {}", cart);
 
-    	return cartService.deleteCart(cart.getId());
+        cartService.deleteCart(cart.getId());
+
+    	return Response.OK();
     }
 }

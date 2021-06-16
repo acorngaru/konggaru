@@ -57,6 +57,7 @@
 						<li v-if="member == null"><a href="${pageContext.request.contextPath}/login">Login</a></li>
 						<li v-else><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
 						<li class="menu-active"><a href="${pageContext.request.contextPath}/">Home</a></li>
+						<li><a href="${pageContext.request.contextPath}/member/mypage">My Page</a></li>
 						<li><a href="${pageContext.request.contextPath}/order/list">My Order</a></li>
 						<li><a href="${pageContext.request.contextPath}/cart/list">My Cart</a></li>
 					</ul>
@@ -102,9 +103,12 @@
 														   style="width: 55px" v-model="cart.productQuantity" @input="checkQuantityRange(cart)"/>
 													<button class="genric-btn primary-border small px-2" @click="minus(cart)">-</button>
 												</div>
+
+												<input class="ml-10" type="checkbox" v-model="selectedCarts" :value="cart">
 											</div>
 										</div>
 									</div>
+
 									<div class="d-flex justify-content-between align-items-center">
 										<div>
 											<a type="button" class="small text-black text-uppercase mr-3" @click="deleteCart(cart)">
@@ -271,14 +275,15 @@
 		new Vue({
 			el: "#app",
 			data: {
-				carts: carts
+				carts: carts,
+				selectedCarts: []
 			},
 			computed: {
 				countCarts: function () {
 					return this.carts ? this.carts.length : 0;
 				},
 				getTotalPrice: function () {
-					return this.carts ? this.carts.reduce((acc, cur) => {
+					return this.selectedCarts ? this.selectedCarts.reduce((acc, cur) => {
 						return acc + (cur.productQuantity * cur.product.price);
 					}, 0) : 0;
 				}
@@ -294,8 +299,10 @@
 					})
 					.then(response => response.json())
 					.then(response => {
-						if (response.status === "OK")
+						if (response.status === "OK") {
+							this.carts = this.carts.filter(existingCart => existingCart.id !== cart.id);
 							swal("Success", "The product has been successfully removed.", "success");
+						}
 					})
 				},
 				plus: function (cart) {
@@ -335,12 +342,17 @@
 					})
 				},
 				goToCheckout: function () {
+					if (this.selectedCarts.length === 0) {
+						swal("Failure", "There are no selected products.", "error");
+						return;
+					}
+
 					fetch("/checkout", {
 						headers: {
 							"Content-Type": "application/json"
 						},
 						method: "post",
-						body: JSON.stringify(this.carts)
+						body: JSON.stringify(this.selectedCarts)
 					})
 					.then(response => response.json())
 					.then(response => {

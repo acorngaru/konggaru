@@ -316,7 +316,12 @@
                         })
                     })
                     .then(response => response.json())
-                    .then(response => console.log(response));
+                    .then(response => {
+                        if (response.status === "OK") {
+                            swal("The order has been successfully placed.")
+                            .then(() => location.href = "/order/list")
+                        }
+                    });
                 }
             }
         })

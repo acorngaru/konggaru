@@ -19,22 +19,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/member")
 public class MemberController {
 	private final MemberService memberService;
-	private final OrderService orderService;
 	private final ObjectMapper objectMapper;
 
 	@GetMapping("/mypage")
     public String showMyPage(Model model, @CurrentUser MemberDetails memberDetails) throws Exception {
-    	model.addAttribute("member", objectMapper.writeValueAsString(memberDetails.member));
-    	model.addAttribute("orders", objectMapper.writeValueAsString(orderService.findOrdersByMemberId(memberDetails.member.getMemberId())));
+    	model.addAttribute(
+    			"member", objectMapper.writeValueAsString(memberService.findMemberById(memberDetails.member.getNickName()))
+		);
 
 		return "member/mypage";
     }
-
-	@PostMapping("/show")
-	@ResponseBody
-	public Member showMyPageById(@RequestBody int id) throws Exception {
-		return memberService.showMyPageById(id);
-	}
 
 	@GetMapping("/current")
 	@ResponseBody
@@ -44,8 +38,20 @@ public class MemberController {
 	
 	@PostMapping("/update")
 	@ResponseBody
-	public void updateMyPage(@ModelAttribute Member member) throws Exception {
+	public Response<?> updateMyPage(@RequestBody Member member) throws Exception {
 		memberService.updateMyPage(member);
+
+		return Response.OK();
 	}
-    
+
+	@GetMapping("/check")
+	@ResponseBody
+	public Response<?> check(@RequestParam(value = "email", required = false) String email,
+							 @RequestParam(value = "phoneNumber", required = false) String phoneNumber) throws Exception {
+		if (email != null) {
+			return memberService.isDuplicateEmail(email) ? Response.ERROR() : Response.OK();
+		} else {
+			return memberService.isDuplicatePhoneNumber(phoneNumber) ? Response.ERROR() : Response.OK();
+		}
+	}
 }

@@ -56,6 +56,7 @@
                         <li v-if="member == null"><a href="${pageContext.request.contextPath}/login">Login</a></li>
                         <li v-else><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
                         <li class="menu-active"><a href="${pageContext.request.contextPath}/">Home</a></li>
+                        <li><a href="${pageContext.request.contextPath}/member/mypage">My Page</a></li>
                         <li><a href="${pageContext.request.contextPath}/order/list">My Order</a></li>
                         <li><a href="${pageContext.request.contextPath}/cart/list">My Cart</a></li>
                     </ul>

@@ -22,23 +22,21 @@
 		[v-cloak] {
 			display: none;
 		}
-	.input-form {
-		max-width: 680px;
-		margin-top: 80px;
-		padding: 32px;
-		background: #fff;
-		-webkit-border-radius: 10px;
-		-moz-border-radius: 10px;
-		border-radius: 10px;
-		-webkit-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
-		-moz-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
-		box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15)
-	}
-</style>
+		.input-form {
+			max-width: 680px;
+			margin-top: 80px;
+			padding: 32px;
+			background: #fff;
+			-webkit-border-radius: 10px;
+			-moz-border-radius: 10px;
+			border-radius: 10px;
+			-webkit-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+			-moz-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+			box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15)
+		}
+	</style>
 </head>
-
 <body>
-
 	<header id="header" style="background: rgba(20, 2, 0, 0.8); position: static">
 		<div class="header-top">
 			<div class="container">
@@ -67,8 +65,11 @@
 				</div>
 				<nav id="nav-menu-container">
 					<ul class="nav-menu">
+						<li v-if="member == null"><a href="${pageContext.request.contextPath}/login">Login</a></li>
+						<li v-else><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
 						<li class="menu-active"><a href="${pageContext.request.contextPath}/">Home</a></li>
 						<li><a href="${pageContext.request.contextPath}/member/mypage">My Page</a></li>
+						<li><a href="${pageContext.request.contextPath}/order/list">My Order</a></li>
 						<li><a href="${pageContext.request.contextPath}/cart/list">My Cart</a></li>
 					</ul>
 				</nav><!-- #nav-menu-container -->
@@ -77,65 +78,56 @@
 	</header>
 
 
-	<div class="container">
-		<div class="input-form-backgroud row">
+	<div class="container" id="app">
+		<div class="input-form-backgroud row mb-60">
 			<div class="input-form col-md-12 mx-auto">
 				<h4 class="mb-3">My Page</h4>
-				<form class="validation-form" action="/member/update" method="post">
+				<form class="validation-form" @submit="update">
 					<!-- novalidate -->
-					<input type="hidden" value="1" name="id">
 					<div class="row">
 						<div class="col-md-6 mb-3">
 							<label for="name">name</label> <input type="text"
 								class="form-control" name="name" id="name" placeholder=""
-								value="" disabled="disabled" required>
+								v-model="member.name" required>
 							<div class="invalid-feedback">name</div>
 						</div>
 						<div class="col-md-6 mb-3">
 							<label for="nickname">nickname</label> <input type="text"
 								class="form-control" name="nickName" id="nickName"
-								placeholder="" value="" required>
+								disabled="disabled" v-model="member.nickName" required>
 							<div class="invalid-feedback">nickname</div>
 						</div>
 					</div>
 
 					<div class="mb-3">
 						<label for="password">password</label> <input type="password"
-							class="form-control" name="password" id="password" placeholder=""
-							value="" required>
+							class="form-control" name="password" id="password"
+							v-model="member.password" required>
+						<div class="invalid-feedback">password</div>
+					</div>
+
+					<div class="mb-3">
+						<label for="passwordConfirmation">password confirmation</label> <input type="password"
+																	  class="form-control" name="password" id="passwordConfirmation"
+																	  v-model="passwordConfirmation" @input="checkPassword" required>
 						<div class="invalid-feedback">password</div>
 					</div>
 
 					<div class="mb-3">
 						<label for="email">e-mail</label> <input type="email"
-							class="form-control" name="email" id="email"
-							placeholder="you@example.com" required>
+							class="form-control" name="email" id="email" v-model="member.email"
+							@input="checkDuplicateEmail" required>
 						<div class="invalid-feedback">e-mail</div>
 					</div>
 
-					<div class="mb-3">
+					<div class="mb-20">
 						<label for="phoneNumber">phone</label> <input type="text"
 							class="form-control" name="phoneNumber" id="phoneNumber"
-							placeholder="" value="" required>
+							@input="checkDuplicatePhoneNumber" v-model="member.phoneNumber" required>
 						<div class="invalid-feedback">phone</div>
 					</div>
 
-					<div class="row">
-						<div class="col-md-6 mb-3">
-							<label for="point">point</label> <input type="text"
-								class="form-control" name="point" id="point" placeholder=""
-								value="" disabled="disabled" required>
-							<div class="invalid-feedback">point</div>
-						</div>
-						<div class="col-md-6 mb-3">
-							<label for="auth">auth</label> <input type="text"
-								class="form-control" name="auth" id="auth" placeholder=""
-								disabled="disabled" value="" required>
-							<div class="invalid-feedback">auth</div>
-						</div>
-					</div>
-
-					<button class="btn btn-primary btn-lg btn-block" type="submit">Update
+					<button class="genric-btn primary w-100" type="submit">Update
 						your account</button>
 				</form>
 			</div>
@@ -200,5 +192,89 @@
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 	<script src="${pageContext.request.contextPath}/js/bootstrap-clockpicker.min.js"></script>
+	<script>
+		new Vue({
+			el: "#header",
+			data: {
+				member: null
+			},
+			created: function () {
+				fetch("/member/current")
+						.then(response => response.json())
+						.then(response => this.member = response.data)
+						.catch(() => this.member = null);
+			}
+		})
+
+		const member = JSON.parse('<%= request.getAttribute("member") %>');
+
+		new Vue({
+			el: "#app",
+			data: {
+				member: {
+					...member,
+					password: ""
+				},
+				originalEmail: member.email,
+				originalPhoneNumber: member.phoneNumber,
+				passwordConfirmation: ""
+			},
+			methods: {
+				update: function (e) {
+					e.preventDefault();
+
+					fetch("/member/update", {
+						headers: {
+							"Content-Type": "application/json"
+						},
+						method: "post",
+						body: JSON.stringify(this.member)
+					})
+					.then(response => response.json())
+					.then(response => {
+						console.log(response)
+						if (response.status === "OK") {
+							swal("Success", "Successfully updated.", "success")
+							.then(() => location.reload())
+						}
+					});
+				},
+				checkPassword: function (e) {
+					this.member.password && e.target.setCustomValidity(this.member.password === this.passwordConfirmation ?
+							"" : "비밀번호가 올바르지 않습니다.");
+				},
+				checkDuplicateEmail: function (e) {
+					console.log(this.originalEmail, e.target.value);
+					e.target.setCustomValidity(
+							e.target.value === this.originalEmail ? "" : "이미 존재하는 이메일입니다."
+					);
+
+					if (e.target.value !== this.originalEmail) {
+						fetch("/member/check?email=" + e.target.value)
+						.then(response => response.json())
+						.then(response => {
+							e.target.setCustomValidity(
+									response.status === "OK" ? "" : "이미 존재하는 이메일입니다."
+							)
+						})
+					}
+				},
+				checkDuplicatePhoneNumber: function (e) {
+					e.target.setCustomValidity(
+							e.target.value === this.originalPhoneNumber ? "" : "이미 존재하는 전화번호입니다."
+					);
+					if (e.target.value !== this.originalPhoneNumber) {
+						fetch("/member/check?phoneNumber=" + e.target.value)
+						.then(response => response.json())
+						.then(response => {
+							e.target.setCustomValidity(
+									response.status === "OK" ? "" : "이미 존재하는 전화번호입니다."
+							)
+						})
+					}
+				}
+			}
+		})
+	</script>
 </body>
 </html>
