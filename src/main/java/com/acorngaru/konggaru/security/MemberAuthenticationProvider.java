@@ -16,6 +16,7 @@ public class MemberAuthenticationProvider implements AuthenticationProvider {
     private MemberDetailsService memberDetailsService;
     @Autowired
     private EmpDetailsService empDetailsService;
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String id = (String)authentication.getPrincipal();

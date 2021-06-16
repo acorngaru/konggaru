@@ -12,9 +12,9 @@
     <title>Accongaru</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="css/icons/favicon.ico"/>
-    <link rel="stylesheet" type="text/css" href="css/util.css">
-    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/css/icons/favicon.ico"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/util.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css">
 </head>
 <body style="background-color: #666666;">
 
@@ -66,7 +66,5 @@
         </div>
     </div>
 </div>
-
-
 </body>
 </html>

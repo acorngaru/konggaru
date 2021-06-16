@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 public class MemberDetailsService implements UserDetailsService {
     @Autowired
     MemberMapper mapper;
+
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         try {
@@ -28,9 +29,7 @@ public class MemberDetailsService implements UserDetailsService {
         }catch (Exception e){
             return null;
         }
-
     }
-
 
     public int signUp(Member member){
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -44,7 +43,6 @@ public class MemberDetailsService implements UserDetailsService {
             return true;
         else
             return false;
-
     }
 
     public MemberDetails getAccount(@CurrentUser MemberDetails memberDetails) {

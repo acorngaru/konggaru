@@ -24,6 +24,14 @@ public class ProductServiceImpl implements ProductService {
     private final UsedIngredientMapper usedIngredientMapper;
 
     /**
+     * 모든 상품 정보 반환
+     */
+    @Override
+    public List<Product> findProductsByCategoryId(int categoryId) {
+        return productMapper.findProductsByCategoryId(categoryId);
+    }
+
+    /**
      * 검색 또는 정렬한 상품 목록을 페이징하여 반환
      */
     @Override

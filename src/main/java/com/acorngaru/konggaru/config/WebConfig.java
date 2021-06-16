@@ -30,8 +30,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
-                .addResourceHandler("/js/**", "/css/**","/images/**")
-                .addResourceLocations("/js/", "/css/","/images/**");
+                .addResourceHandler("/js/**", "/css/**", "/image/**", "/font/**")
+                .addResourceLocations("/js/", "/css/", "/image/", "/font/");
     }
 
     @Override
@@ -57,4 +57,5 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public LocalValidatorFactoryBean validator() { return new LocalValidatorFactoryBean(); }}
+    public LocalValidatorFactoryBean validator() { return new LocalValidatorFactoryBean(); }
+}
