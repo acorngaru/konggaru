@@ -3,6 +3,7 @@ package com.acorngaru.konggaru.controller;
 import com.acorngaru.konggaru.model.Member;
 import com.acorngaru.konggaru.security.MemberDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,6 +35,7 @@ public class AccountController {
 
         return login();
     }
+
 
     @GetMapping("/error")
     public String notPermit(){

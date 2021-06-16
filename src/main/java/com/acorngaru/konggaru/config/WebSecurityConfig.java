@@ -1,5 +1,6 @@
 package com.acorngaru.konggaru.config;
 
+import com.acorngaru.konggaru.security.LoginSuccessHandler;
 import com.acorngaru.konggaru.security.MemberAuthenticationProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,14 +21,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/dashboard**", "/checkout**", "/cart**, /member**").hasRole("MEMBER")
-                .antMatchers("/ingredient**").hasRole("ADMIN")
+                .antMatchers( "/checkout**", "/cart**, /member**").hasRole("MEMBER")
+                .antMatchers("/ingredient**","/dashboard**","/employee**").hasRole("ADMIN")
                 .antMatchers( "/login**", "/login/register**", "/", "/product/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login")
-                .defaultSuccessUrl("/", true)
+                .loginPage("/login").successHandler(new LoginSuccessHandler())
                 .permitAll()
                 .and()
                 .logout()

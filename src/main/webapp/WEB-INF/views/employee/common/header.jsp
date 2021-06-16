@@ -8,10 +8,10 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/ingredient" class="nav-link">재고 관리</a>
+            <a href="/ingredient" class="nav-link">직원 관리</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/order" class="nav-link">발주</a>
+            <a href="/order" class="nav-link">출석부</a>
         </li>
     </ul>
 
