@@ -16,10 +16,11 @@
 		where id=#{id}
 	</update>
 
-	<insert id="addEmp" parameterType="Employee">
+
+    <insert id="addEmp" parameterType="Employee">
 		insert into employee(id, name, phone, role, salary, hiredate, resignation, work_time,auth,passwd)
 		VALUES(#{id}, #{name}, #{phone}, #{role}, #{salary}, #{hiredate},
-			   #{resignation}, #{work_time},#{auth},#{passwd})
+		#{resignation}, #{work_time},#{auth},#{passwd})
 	</insert>
 
 	<select id="searchEmp" parameterType="hashmap" resultType="Employee">

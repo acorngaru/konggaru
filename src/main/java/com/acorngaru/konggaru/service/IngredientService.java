@@ -13,4 +13,6 @@ public interface IngredientService {
     void create(Ingredient ingredient);
     void deleteIngredientById(int id);
     void deleteIngredientsById(List<Integer> ids);
+    List<Ingredient> allIngredient();
+
 }
