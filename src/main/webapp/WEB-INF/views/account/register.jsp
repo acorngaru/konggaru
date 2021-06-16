@@ -88,6 +88,7 @@
                 data: JSON.stringify(json),
                 success(data){
                     console.log(data)
+                    $(location).attr('href','/login')
                 }
 
             })
