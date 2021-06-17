@@ -35,8 +35,8 @@ function f(){
 								$("#clickDiv").empty();
 								var html1 = "";
 									html1 += '사번 :'	+ '<input type="text" id="clockId">';
-									html1 += '<a href="#" class="btn btn-success" data-toggle="modal" id="clockIdBtn">'	+ '<i class="material-icons">';
-									html1 += '&#xE147;'	+ '</i>' + '<span>' + '입력' + '</span>'	+ '</a>';
+									html1 += '<a href="#" class="btn btn-success" data-toggle="modal" id="ClockIdBtn">'	+ '<i class="material-icons">';
+									html1 += '</i>' + '<span>' + '입력' + '</span>'	+ '</a>';
 								$("#clickDiv").append(html1);
 								alert(data.mesg); 
 							}
@@ -65,7 +65,7 @@ function f(){
 								var html = "";
 									html += '사번 :' + '<input type="text" id="clockId">';
 									html += '<a href="#" class="btn btn-success" data-toggle="modal" id="ClockIdBtn">' + '<i class="material-icons">';
-									html += '&#xE147;' + '</i>'	+ '<span>' + '입력' + '</span>' + '</a>';
+									html += '</i>'	+ '<span>' + '입력' + '</span>' + '</a>';
 									html += data.name + '님';
 									html += data.clockin + '에 출근';
 								$("#clickDiv").append(html);
@@ -75,7 +75,7 @@ function f(){
 								var html2 = "";
 									html2 += '사번 :'	+ '<input type="text" id="clockId">';
 									html2 += '<a href="#" class="btn btn-success" data-toggle="modal" id="ClockIdBtn">'	+ '<i class="material-icons">';
-									html2 += '&#xE147;'	+ '</i>' + '<span>'	+ '입력' + '</span>'	+ '</a>';
+									html2 += '</i>' + '<span>'	+ '입력' + '</span>'	+ '</a>';
 								$("#clickDiv").append(html2);
 								alert(data.name + "님은 "	+ data.mesg);
 								}
@@ -104,7 +104,7 @@ function f(){
 								var html = "";
 									html += '사번 :' + '<input type="text" id="clockId">';
 									html += '<a href="#" class="btn btn-success" data-toggle="modal" id="ClockIdBtn">' + '<i class="material-icons">';
-									html += '&#xE147;' + '</i>'	+ '<span>' + '입력' + '</span>' + '</a>';
+									html += '</i>'	+ '<span>' + '입력' + '</span>' + '</a>';
 									html += data.name + '님'; 
 									html += data.clockout + '에 퇴근';
 									$("#clickDiv").append(html);
@@ -113,8 +113,8 @@ function f(){
 							    $("#clickDiv").empty();
 							    var html3 = "";
 								    html3 += '사번 :'	+ '<input type="text" id="clockId">';
-								    html3 += '<a href="#" class="btn btn-success" data-toggle="modal" id="clockIdBtn">'	+ '<i class="material-icons">';
-								    html3 += '&#xE147;'	+ '</i>' + '<span>' + '입력' + '</span>'	+ '</a>';
+								    html3 += '<a href="#" class="btn btn-success" data-toggle="modal" id="ClockIdBtn">'	+ '<i class="material-icons">';
+								    html3 += '</i>' + '<span>' + '입력' + '</span>'	+ '</a>';
 							    $("#clickDiv").append(html3);
 							    alert(data.name + "님은 "	+ data.mesg);
 					 	  	}
