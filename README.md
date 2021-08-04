@@ -82,7 +82,7 @@
 |:---:|:---:|:---:|
 |![dashboard][dashboard]|![login][login]|![signup][signup]|
 
-## Libarary used
+## Library used
 - [SweetAlert](https://sweetalert.js.org)
 - [FontAwesome](https://fontawesome.com)
 - [jQuery](https://jquery.com)
